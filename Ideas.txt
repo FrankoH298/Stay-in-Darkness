@@ -1,0 +1,7 @@
+juego 2d
+fitviewport
+armas modulares
+accesorios compartidos
+personaje modular
+graficos estilo ao-legend of zelda (MAS AO)
+inventario 
