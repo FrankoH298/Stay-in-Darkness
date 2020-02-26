@@ -2,6 +2,7 @@ package com.stayinthedarkness;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.stayinthedarkness.ventanas.GameScreen;
 import com.stayinthedarkness.ventanas.MainMenu;
 
 public class StayintheDarkness extends Game {
@@ -11,7 +12,7 @@ public class StayintheDarkness extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch(); // Inicializacion del SpriteBatch
-        this.setScreen(new MainMenu(this)); // A la ventana se le setea el menu.
+        this.setScreen(new GameScreen(this)); // A la ventana se le setea el menu.
     }
     
 
