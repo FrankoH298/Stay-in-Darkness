@@ -39,9 +39,9 @@ public class MainMenu implements Screen {
         Label labelWelcome = new Label("Bienvenido!", skin);
         TextField fieldName = new TextField("", skin);
         table.add(labelWelcome);
-        table.row(); // Inserta una columna
+        table.row(); // Inserta una fila
         table.add(fieldName);
-        table.row(); // Inserta una columna
+        table.row(); // Inserta una fila
         table.add(button);
     }
 
