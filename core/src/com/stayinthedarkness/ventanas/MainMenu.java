@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.stayinthedarkness.IOFiles.IOFiles;
 import com.stayinthedarkness.StayintheDarkness;
 
 /**
@@ -43,6 +44,9 @@ public class MainMenu implements Screen {
         table.add(fieldName);
         table.row(); // Inserta una columna
         table.add(button);
+        IOFiles a = new IOFiles();
+        a.writeVar("asd", "asd", "asd", "asdfa123");
+        System.out.println(a.getVar("asd", "asd", "asd"));
     }
 
     @Override
