@@ -7,16 +7,17 @@ import com.stayinthedarkness.ventanas.MainMenu;
 public class StayintheDarkness extends Game {
 
     private SpriteBatch batch;
-
+    
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        this.setScreen(new MainMenu(this));
+        batch = new SpriteBatch(); // Inicializacion del SpriteBatch
+        this.setScreen(new MainMenu(this)); // A la ventana se le setea el menu.
     }
+    
 
     @Override
     public void dispose() {
-        batch.dispose();
+        batch.dispose(); // Limpia el spritebatch
     }
     public SpriteBatch getSpriteBatch(){
         return this.batch;
