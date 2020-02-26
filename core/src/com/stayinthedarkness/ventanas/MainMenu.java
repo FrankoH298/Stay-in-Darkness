@@ -38,10 +38,11 @@ public class MainMenu implements Screen {
         TextButton button = new TextButton("Menu", skin);
         Label labelWelcome = new Label("Bienvenido!", skin);
         TextField fieldName = new TextField("", skin);
-        table.add(labelWelcome);
+        table.add(labelWelcome).padBottom(50);
         table.row(); // Inserta una fila
-        table.add(fieldName);
+        table.add(fieldName).pad(20f);
         table.row(); // Inserta una fila
+        table.row();
         table.add(button);
     }
 
@@ -53,7 +54,7 @@ public class MainMenu implements Screen {
     public void render(float delta) {
         // delta = Tiempo que hay entre un frame y otro. Ej:   Frame1 -- 50ms -- Frame2
         //-------------------------------------------------------------------
-        Gdx.gl.glClearColor(1f, 0f, 0f, 1f); // Limpiamos la escena y le establecemos un fondo de color.
+        Gdx.gl.glClearColor(255, 0, 240, 1f); // Limpiamos la escena y le establecemos un fondo de color.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //-------------------------------------------------------------------
         game.getSpriteBatch().begin(); // Inicio del batch, a partir de aca van todos los .draw().
