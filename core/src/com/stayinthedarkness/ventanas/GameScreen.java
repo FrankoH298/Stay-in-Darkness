@@ -5,54 +5,47 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.stayinthedarkness.StayintheDarkness;
+import com.stayinthedarkness.MainGame;
 
 public class GameScreen implements Screen {
 
     // VARIABLES
-    private StayintheDarkness game;
-    private SpriteBatch batch;
-    private OrthographicCamera camera;
-    private Texture textura;
+    private final MainGame game;
+    private final SpriteBatch batch;
+    private final OrthographicCamera camera;
+    private final FitViewport viewPort;
+    private final BitmapFont font;
+    private final TmxMapLoader mapLoader;
+    private final TiledMap map;
+    private final OrthogonalTiledMapRenderer rendererMap;
     private float velocity;
-    private BitmapFont font;
-    private FitViewport viewport;
-    private float vpWidth = Gdx.graphics.getWidth();
-    private float vpHeight = Gdx.graphics.getHeight();
-    private TmxMapLoader mapLoader;
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer rendererMap;
 
-    public GameScreen(StayintheDarkness game) {
+    public GameScreen(MainGame game) {
         this.game = game;
         this.batch = game.getSpriteBatch();
 
-        // Creamos una camara con el tamaño de la ventana.
-        this.camera = new OrthographicCamera(vpWidth, vpHeight);
+        // Creamos una camara.
+        this.camera = new OrthographicCamera();
 
         // FitViewport sirve para que al redimensionar el tamaño de la ventana se mantenga la escala.
-        viewport = new FitViewport(vpWidth, vpHeight, camera);
-        viewport.apply();
-
-        // Guardamos el tamaño de la ventana.
-        vpWidth = viewport.getScreenWidth();
-        vpHeight = viewport.getScreenHeight();
+        viewPort = new FitViewport(MainGame.V_WIDTH, MainGame.V_HEIGHT, camera);
+        viewPort.apply();
 
         // Seteamos la posicion de la camara en la mitad de la ventana.
-        camera.position.set(vpWidth / 2, vpHeight / 2, 0);
+        camera.position.set(viewPort.getWorldWidth() / 2f, viewPort.getWorldHeight() / 2f, 0);
         font = new BitmapFont();
         ////////////////////////////////////////////////////////////////////////////////
 
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("map/tiledmap.tmx");
         rendererMap = new OrthogonalTiledMapRenderer(map, batch);
+
     }
 
     @Override
@@ -84,9 +77,8 @@ public class GameScreen implements Screen {
         // Al batch le va a setear la matriz de la camara y inicia el batch.
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-
         // Mostramos los fps en la esquina izquierda-arriba de la ventana.
-        drawText(font, batch, "FPS:" + Integer.toString(Gdx.graphics.getFramesPerSecond()), /*-(vpWidth / 2) + 10*/ 0, /*(vpHeight / 2) - 10*/ 0, 1f, 1f, 1f, 1f);
+        drawText(font, batch, "FPS:" + Integer.toString(Gdx.graphics.getFramesPerSecond()), -(viewPort.getWorldWidth() / 2) + 10, (viewPort.getWorldHeight() / 2) - 10, 1f, 1f, 1f, 1f);
 
         // Fin del batch.
         batch.end();
@@ -96,11 +88,7 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
 
         // Actualizamos el viewport
-        viewport.update(width, height);
-
-        // Actualizamos las variables del tamaño de la ventana.
-        vpWidth = viewport.getWorldWidth();
-        vpHeight = viewport.getWorldHeight();
+        viewPort.update(width, height);
     }
 
     @Override
@@ -117,6 +105,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        font.dispose();
+        map.dispose();
+        rendererMap.dispose();
     }
 
     private void drawText(BitmapFont font, SpriteBatch batch, String text, float x, float y, float r, float g, float b, float a) {
