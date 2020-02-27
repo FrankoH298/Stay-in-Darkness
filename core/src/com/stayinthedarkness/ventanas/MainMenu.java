@@ -12,10 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.stayinthedarkness.IOFiles.IOFiles;
 import com.stayinthedarkness.StayintheDarkness;
 
-/**
- *
- * @author franc
- */
 public class MainMenu implements Screen {
 
     private final StayintheDarkness game;
@@ -44,9 +40,6 @@ public class MainMenu implements Screen {
         table.add(fieldName);
         table.row(); // Inserta una columna
         table.add(button);
-        IOFiles a = new IOFiles();
-        a.writeVar("asd", "asd", "asd", "asdfa123");
-        System.out.println(a.getVar("asd", "asd", "asd"));
     }
 
     @Override
