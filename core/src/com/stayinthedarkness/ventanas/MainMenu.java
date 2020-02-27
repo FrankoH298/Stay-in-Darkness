@@ -44,9 +44,6 @@ public class MainMenu implements Screen {
         table.add(fieldName);
         table.row(); // Inserta una columna
         table.add(button);
-        IOFiles a = new IOFiles();
-        a.writeVar("asd", "asd", "asd", "asdfa123");
-        System.out.println(a.getVar("asd", "asd", "asd"));
     }
 
     @Override

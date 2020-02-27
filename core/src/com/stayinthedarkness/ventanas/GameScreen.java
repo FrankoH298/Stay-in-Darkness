@@ -34,7 +34,7 @@ public class GameScreen implements Screen {
         textura = new Texture(Gdx.files.internal("default.png"));
         camera.position.set(vpWidth / 2, vpHeight / 2, 0);
         font = new BitmapFont();
-        viewport = new FitViewport(vpWidth, vpHeight, camera);
+        viewport = new FitViewport(vpWidth, vpHeight, camera); // FitViewport sirve para que al redimensionar el tamaño de la ventana se mantenga la escala.
         viewport.apply();
     }
 
@@ -43,7 +43,7 @@ public class GameScreen implements Screen {
     }
 
     public void update(float delta) {
-        velocity = (100f * delta);
+        velocity = (100f * delta); // Multiplicamos la velocidad base y delta para que la velocidad no dependa de los frames.
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             camera.translate(0, velocity);
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
@@ -65,21 +65,20 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void render(float delta) {
+    public void render(float delta) { // Delta = Tiempo entre frame y frame.
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f); // Limpiamos la escena y le establecemos un fondo de color.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        update(delta);
+        update(delta); // Llamamos al metodo update mandandole delta.
         batch.setProjectionMatrix(camera.combined); // Al batch le va a setear la matriz de la camara.
-        batch.begin();
+        batch.begin(); // Inicio del batch, a partir de aqui van todos los draw que utilicen batch.
         batch.draw(textura, 0, 0);
-        drawText(font, batch, "HOLA PT", 0, 0, 1f, 0.2f, 0.2f, 1f);
-        batch.end();
+        batch.end(); // Fin del batch.
 
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        viewport.update(width, height); // Actualizamos el viewport
     }
 
     @Override
@@ -99,7 +98,7 @@ public class GameScreen implements Screen {
     }
 
     private void drawText(BitmapFont font, SpriteBatch batch, String text, float x, float y, float r, float g, float b, float a) {
-        font.setColor(r, g, b, a);
-        font.draw(batch, text, camera.position.x + x, camera.position.y + y);
+        font.setColor(r, g, b, a); // Seteamos el color del texto a dibujar
+        font.draw(batch, text, camera.position.x + x, camera.position.y + y); // Dibujamos la fuente y le seteamos la posicion en el centro de la camara + x o y
     }
 }
