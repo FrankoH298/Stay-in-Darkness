@@ -35,18 +35,15 @@ public class MainMenu implements Screen {
         //-----------------------------Skins--------------------------------------
         skin = new Skin(Gdx.files.internal("uiskin.json")); // Creamos una skin necesaria para los widgets.
         //---------------------------Widgets----------------------------------------
-        TextButton playButton = new TextButton("Play", skin);
-        TextButton optionButton = new TextButton("Options",skin);
-        Label labelName = new Label("Stay In Darkness", skin);
-        Label labelEmpty = new Label("dasd",skin);
-        TextField fieldName = new TextField("Ingrese su nombre", skin);
-        table.add(labelName);
+        TextButton button = new TextButton("Menu", skin);
+        Label labelWelcome = new Label("Bienvenido!", skin);
+        TextField fieldName = new TextField("", skin);
+        table.add(labelWelcome).padBottom(50);
         table.row(); // Inserta una fila
-        table.add(fieldName).padTop(200);
+        table.add(fieldName).pad(20f);
         table.row(); // Inserta una fila
-        table.add(playButton);
-        table.row(); // Inserta una fila
-        table.add(optionButton);
+        table.row();
+        table.add(button);
     }
 
     @Override
@@ -57,7 +54,7 @@ public class MainMenu implements Screen {
     public void render(float delta) {
         // delta = Tiempo que hay entre un frame y otro. Ej:   Frame1 -- 50ms -- Frame2
         //-------------------------------------------------------------------
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1f); // Limpiamos la escena y le establecemos un fondo de color.
+        Gdx.gl.glClearColor(255, 0, 240, 1f); // Limpiamos la escena y le establecemos un fondo de color.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //-------------------------------------------------------------------
         game.getSpriteBatch().begin(); // Inicio del batch, a partir de aca van todos los .draw().
