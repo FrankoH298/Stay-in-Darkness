@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.stayinthedarkness.StayintheDarkness;
 
@@ -24,18 +25,19 @@ public class GameScreen implements Screen {
     private float velocity;
     private BitmapFont font;
     private FitViewport viewport;
+    private int vpWidth = Gdx.graphics.getWidth();
+    private int vpHeight = Gdx.graphics.getHeight();
 
     public GameScreen(StayintheDarkness game) {
         this.game = game;
         this.batch = game.getSpriteBatch();
-        int vpWidth = Gdx.graphics.getWidth(),
-                vpHeight = Gdx.graphics.getHeight();
         this.camera = new OrthographicCamera(vpWidth, vpHeight); // Creamos una camara con el tamaño de la ventana.
         textura = new Texture(Gdx.files.internal("default.png"));
         camera.position.set(vpWidth / 2, vpHeight / 2, 0);
         font = new BitmapFont();
         viewport = new FitViewport(vpWidth, vpHeight, camera); // FitViewport sirve para que al redimensionar el tamaño de la ventana se mantenga la escala.
         viewport.apply();
+        Gdx.graphics.setVSync(false);
     }
 
     @Override
@@ -71,6 +73,7 @@ public class GameScreen implements Screen {
         update(delta); // Llamamos al metodo update mandandole delta.
         batch.setProjectionMatrix(camera.combined); // Al batch le va a setear la matriz de la camara.
         batch.begin(); // Inicio del batch, a partir de aqui van todos los draw que utilicen batch.
+        drawText(font, batch, "FPS:" + Integer.toString(Gdx.graphics.getFramesPerSecond()), -(vpWidth * 0.5f) + 10, vpHeight * 0.5f - 10, 0f, 0f, 0f, 1f);
         batch.draw(textura, 0, 0);
         batch.end(); // Fin del batch.
 
@@ -79,6 +82,8 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height); // Actualizamos el viewport
+        vpWidth = Gdx.graphics.getWidth();
+        vpHeight = Gdx.graphics.getHeight();
     }
 
     @Override

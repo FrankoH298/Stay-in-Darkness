@@ -5,8 +5,13 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.stayinthedarkness.StayintheDarkness;
 
 public class DesktopLauncher {
-	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new StayintheDarkness(), config);
-	}
+
+    public static void main(String[] arg) {
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.foregroundFPS = 0;
+        config.backgroundFPS = 0;
+        config.vSyncEnabled = false;
+        new LwjglApplication(new StayintheDarkness(), config);
+
+    }
 }
