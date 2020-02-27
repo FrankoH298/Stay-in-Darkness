@@ -33,7 +33,7 @@ public class MainMenu implements Screen {
         table.setDebug(false); // Muestra los bordes de los widgets
         stage.addActor(table);
         //-----------------------------Skins--------------------------------------
-        skin = new Skin(Gdx.files.internal("uiskin.json")); // Creamos una skin necesaria para los widgets.
+        skin = new Skin(Gdx.files.internal("font/uiskin.json")); // Creamos una skin necesaria para los widgets.
         //---------------------------Widgets----------------------------------------
         TextButton button = new TextButton("Menu", skin);
         Label labelWelcome = new Label("Bienvenido!", skin);

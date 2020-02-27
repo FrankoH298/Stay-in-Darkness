@@ -8,16 +8,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.stayinthedarkness.StayintheDarkness;
 
-/**
- *
- * @author franc
- */
 public class GameScreen implements Screen {
 
+    // VARIABLES
     private StayintheDarkness game;
     private SpriteBatch batch;
     private OrthographicCamera camera;
@@ -25,19 +24,35 @@ public class GameScreen implements Screen {
     private float velocity;
     private BitmapFont font;
     private FitViewport viewport;
-    private int vpWidth = Gdx.graphics.getWidth();
-    private int vpHeight = Gdx.graphics.getHeight();
+    private float vpWidth = Gdx.graphics.getWidth();
+    private float vpHeight = Gdx.graphics.getHeight();
+    private TmxMapLoader mapLoader;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer rendererMap;
 
     public GameScreen(StayintheDarkness game) {
         this.game = game;
         this.batch = game.getSpriteBatch();
-        this.camera = new OrthographicCamera(vpWidth, vpHeight); // Creamos una camara con el tamaño de la ventana.
-        textura = new Texture(Gdx.files.internal("default.png"));
+
+        // Creamos una camara con el tamaño de la ventana.
+        this.camera = new OrthographicCamera(vpWidth, vpHeight);
+
+        // FitViewport sirve para que al redimensionar el tamaño de la ventana se mantenga la escala.
+        viewport = new FitViewport(vpWidth, vpHeight, camera);
+        viewport.apply();
+
+        // Guardamos el tamaño de la ventana.
+        vpWidth = viewport.getScreenWidth();
+        vpHeight = viewport.getScreenHeight();
+
+        // Seteamos la posicion de la camara en la mitad de la ventana.
         camera.position.set(vpWidth / 2, vpHeight / 2, 0);
         font = new BitmapFont();
-        viewport = new FitViewport(vpWidth, vpHeight, camera); // FitViewport sirve para que al redimensionar el tamaño de la ventana se mantenga la escala.
-        viewport.apply();
-        Gdx.graphics.setVSync(false);
+        ////////////////////////////////////////////////////////////////////////////////
+
+        mapLoader = new TmxMapLoader();
+        map = mapLoader.load("map/tiledmap.tmx");
+        rendererMap = new OrthogonalTiledMapRenderer(map, batch);
     }
 
     @Override
@@ -45,45 +60,47 @@ public class GameScreen implements Screen {
     }
 
     public void update(float delta) {
-        velocity = (100f * delta); // Multiplicamos la velocidad base y delta para que la velocidad no dependa de los frames.
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            camera.translate(0, velocity);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            camera.translate(0, -velocity);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            camera.translate(velocity, 0);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            camera.translate(-velocity, 0);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.COMMA)) {
-            if (camera.zoom > 0.2f) {
-                camera.zoom -= 0.01f;
-            }
-        } else if (Gdx.input.isKeyPressed(Input.Keys.PERIOD)) {
-            if (camera.zoom < 2f) {
-                camera.zoom += 0.01f;
-            }
-        }
-        camera.update(); // Actualiza la camara.
+        // Procesamos la entrada
+        handleInput(delta);
+        // Actualiza la camara.
+        camera.update();
+        // Le seteamos la camara al renderizado del mapa.
+        rendererMap.setView(camera);
     }
 
     @Override
     public void render(float delta) { // Delta = Tiempo entre frame y frame.
-        Gdx.gl.glClearColor(1f, 0f, 0f, 1f); // Limpiamos la escena y le establecemos un fondo de color.
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        update(delta); // Llamamos al metodo update mandandole delta.
-        batch.setProjectionMatrix(camera.combined); // Al batch le va a setear la matriz de la camara.
-        batch.begin(); // Inicio del batch, a partir de aqui van todos los draw que utilicen batch.
-        drawText(font, batch, "FPS:" + Integer.toString(Gdx.graphics.getFramesPerSecond()), -(vpWidth * 0.5f) + 10, vpHeight * 0.5f - 10, 0f, 0f, 0f, 1f);
-        batch.draw(textura, 0, 0);
-        batch.end(); // Fin del batch.
 
+        // Llamamos al metodo update enviandole el valor delta.
+        update(delta);
+
+        // Limpiamos la escena y le establecemos un fondo de color.
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Renderizamos el mapa fuera del batch ya que este lo vuelve a iniciar y terminar.
+        rendererMap.render();
+
+        // Al batch le va a setear la matriz de la camara y inicia el batch.
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+
+        // Mostramos los fps en la esquina izquierda-arriba de la ventana.
+        drawText(font, batch, "FPS:" + Integer.toString(Gdx.graphics.getFramesPerSecond()), /*-(vpWidth / 2) + 10*/ 0, /*(vpHeight / 2) - 10*/ 0, 1f, 1f, 1f, 1f);
+
+        // Fin del batch.
+        batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height); // Actualizamos el viewport
-        vpWidth = Gdx.graphics.getWidth();
-        vpHeight = Gdx.graphics.getHeight();
+
+        // Actualizamos el viewport
+        viewport.update(width, height);
+
+        // Actualizamos las variables del tamaño de la ventana.
+        vpWidth = viewport.getWorldWidth();
+        vpHeight = viewport.getWorldHeight();
     }
 
     @Override
@@ -103,7 +120,26 @@ public class GameScreen implements Screen {
     }
 
     private void drawText(BitmapFont font, SpriteBatch batch, String text, float x, float y, float r, float g, float b, float a) {
-        font.setColor(r, g, b, a); // Seteamos el color del texto a dibujar
-        font.draw(batch, text, camera.position.x + x, camera.position.y + y); // Dibujamos la fuente y le seteamos la posicion en el centro de la camara + x o y
+
+        // Seteamos el color del texto a dibujar
+        font.setColor(r, g, b, a);
+
+        // Dibujamos la fuente y le seteamos la posicion en el centro de la camara + x o y
+        font.draw(batch, text, camera.position.x + x, camera.position.y + y);
+    }
+
+    private void handleInput(float delta) {
+
+        // Multiplicamos la velocidad base y delta para que la velocidad no dependa de los frames.
+        velocity = (100f * delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            camera.translate(0, velocity);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            camera.translate(0, -velocity);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            camera.translate(velocity, 0);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            camera.translate(-velocity, 0);
+        }
     }
 }
