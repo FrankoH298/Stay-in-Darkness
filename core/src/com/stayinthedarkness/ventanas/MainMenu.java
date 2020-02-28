@@ -21,7 +21,9 @@ public class MainMenu implements Screen {
     private final Stage stage;
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
-
+    private String name;
+            
+            
     public MainMenu(StayintheDarkness game) {
         this.game = game;
         //-------------------------------Stage------------------------------------
@@ -37,16 +39,20 @@ public class MainMenu implements Screen {
         //---------------------------Widgets----------------------------------------
         TextButton playButton = new TextButton("Play", skin);
         TextButton optionButton = new TextButton("Options",skin);
+        TextButton exitButton = new TextButton("Exit",skin);
         Label labelName = new Label("Stay In Darkness", skin);
-        Label labelEmpty = new Label("dasd",skin);
         TextField fieldName = new TextField("Ingrese su nombre", skin);
-        table.add(labelName);
+        
+        table.add(labelName).expand(0,500).prefWidth(100).prefHeight(50);
         table.row(); // Inserta una fila
-        table.add(fieldName).padTop(200);
+        table.add(fieldName).expandY().bottom().prefWidth(100).prefHeight(50);
         table.row(); // Inserta una fila
-        table.add(playButton);
-        table.row(); // Inserta una fila
-        table.add(optionButton);
+        table.add(playButton).expandY().prefWidth(100).prefHeight(50);
+        table.row(); // Inserta una fila 
+        table.add(optionButton).expandY().top().prefWidth(100).prefHeight(50);
+        table.row();
+        table.add(exitButton).expand().bottom().right().prefWidth(100).prefHeight(50);
+                
     }
 
     @Override
