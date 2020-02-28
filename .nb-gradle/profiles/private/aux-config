@@ -4,13 +4,13 @@
   <auxiliary>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-      <group/>
-    </open-files>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
       <group>
         <file>file:/D:/Documentos/Stay%20in%20the%20Darkness/core/src/com/stayinthedarkness/ventanas/MainMenu.java</file>
         <file>file:/D:/Documentos/Stay%20in%20the%20Darkness/core/src/com/stayinthedarkness/StayintheDarkness.java</file>
       </group>
+    </open-files>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+      <group/>
     </open-files>
   </auxiliary>
 </gradle-project-properties>
