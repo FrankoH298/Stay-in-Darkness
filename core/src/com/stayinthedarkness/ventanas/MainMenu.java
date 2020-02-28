@@ -3,12 +3,14 @@ package com.stayinthedarkness.ventanas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.stayinthedarkness.StayintheDarkness;
 
 /**
@@ -22,6 +24,7 @@ public class MainMenu implements Screen {
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
     private String name;
+    
             
             
     public MainMenu(StayintheDarkness game) {
@@ -39,11 +42,27 @@ public class MainMenu implements Screen {
         //---------------------------Widgets----------------------------------------
         TextButton playButton = new TextButton("Play", skin);
         TextButton optionButton = new TextButton("Options",skin);
-        TextButton exitButton = new TextButton("Exit",skin);
+        final TextButton exitButton = new TextButton("Exit",skin);
         Label labelName = new Label("Stay In Darkness", skin);
         TextField fieldName = new TextField("Ingrese su nombre", skin);
         
-        table.add(labelName).expand(0,500).prefWidth(100).prefHeight(50);
+        exitButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+               Gdx.app.exit();
+            }
+            
+        });
+        
+        playButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            }
+            
+        });
+        
+        
+        table.add(labelName).expand(0,100).prefWidth(100).prefHeight(50);
         table.row(); // Inserta una fila
         table.add(fieldName).expandY().bottom().prefWidth(100).prefHeight(50);
         table.row(); // Inserta una fila
