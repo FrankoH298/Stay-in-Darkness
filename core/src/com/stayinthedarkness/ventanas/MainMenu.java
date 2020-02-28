@@ -25,7 +25,7 @@ public class MainMenu implements Screen {
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
     private String name;
-  
+
     public MainMenu(StayintheDarkness game) {
         this.game = game;
         //-------------------------------Stage------------------------------------
@@ -44,41 +44,40 @@ public class MainMenu implements Screen {
 
         //---------------------------Widgets----------------------------------------
         TextButton playButton = new TextButton(bundle.get("MainMenu.playButton"), skin);
-        TextButton optionButton = new TextButton(bundle.get("MainMenu.optionButton"), skin);
+        TextButton optionsButton = new TextButton(bundle.get("MainMenu.optionButton"), skin);
         TextButton exitButton = new TextButton(bundle.get("MainMenu.exitButton"), skin);
         Label labelName = new Label("Stay In Darkness", skin);
         TextField fieldName = new TextField(bundle.get("MainMenu.fieldName"), skin);
-        exitButton.addListener(new ClickListener(){
+        exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-               Gdx.app.exit();
+                Gdx.app.exit();
             }
-            
+
         });
         //Esto es para cambiar a la ventana del juego
-        playButton.addListener(new ClickListener(){
+        playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //game.setScreen(Nombre de la Ventana);
             }
         });
-        
+
         //Esto es para cambiar a la venatana de opciones
-        optionsButton.addListener(new ClickListener(){
+        optionsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //game.setScreen(nombre de la ventana);
             }
-            
+
         });
-        
-        
-        table.add(labelName).expand(0,100).prefWidth(100).prefHeight(50);
+
+        table.add(labelName).expand(0, 100).prefWidth(100).prefHeight(50);
         table.row(); // Inserta una fila
         table.add(fieldName).expandY().bottom().prefWidth(100).prefHeight(50);
         table.row(); // Inserta una fila
         table.add(playButton).expandY().prefWidth(100).prefHeight(50);
-        table.row(); // Inserta una fila 
+        table.row(); // Inserta una fila
         table.add(optionsButton).expandY().top().prefWidth(100).prefHeight(50);
         table.row();
         table.add(exitButton).expand().bottom().right().prefWidth(100).prefHeight(50);
