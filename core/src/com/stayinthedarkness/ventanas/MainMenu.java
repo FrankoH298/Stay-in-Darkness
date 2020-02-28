@@ -23,26 +23,36 @@ public class MainMenu implements Screen {
 
     public MainMenu(final MainGame game) {
         this.game = game;
-        //-------------------------------Stage------------------------------------
+
+        // Seteamos para el que stage controle la entrada del teclado.
         stage = new Stage();
-        Gdx.input.setInputProcessor(stage); // Seteamos para el que stage controle la entrada del teclado.
-        //-------------------------------Tabla------------------------------------
+        Gdx.input.setInputProcessor(stage);
+
+        // Creamos la ventana.
         table = new Table();
-        table.setFillParent(true); // Necesario para que la tabla ocupe toda la ventana.
-        table.setDebug(false); // Muestra los bordes de los widgets
+
+        // Necesario para que la tabla ocupe toda la ventana.
+        table.setFillParent(true);
+
+        // Muestra los bordes de los widgets.
+        table.setDebug(false);
         stage.addActor(table);
-        //-----------------------------Skins--------------------------------------
-        skin = new Skin(Gdx.files.internal("uiskin.json")); // Creamos una skin necesaria para los widgets.
+
+        // Creamos una skin necesaria para los widgets.
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         // Cargamos los archivos de traduccion.
         I18NBundle bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
 
-        //---------------------------Widgets----------------------------------------
+        //---------------------------------Widgets----------------------------------
         TextButton playButton = new TextButton(bundle.get("MainMenu.playButton"), skin);
         TextButton optionsButton = new TextButton(bundle.get("MainMenu.optionButton"), skin);
         TextButton exitButton = new TextButton(bundle.get("MainMenu.exitButton"), skin);
         Label labelName = new Label("Stay In Darkness", skin);
         TextField fieldName = new TextField(bundle.get("MainMenu.fieldName"), skin);
+        //---------------------------------Widgets----------------------------------
+
+        //-----------------------------WidgetsListener------------------------------
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -50,6 +60,7 @@ public class MainMenu implements Screen {
             }
 
         });
+
         //Esto es para cambiar a la ventana del juego
         playButton.addListener(new ClickListener() {
             @Override
@@ -66,7 +77,9 @@ public class MainMenu implements Screen {
             }
 
         });
+        //-----------------------------WidgetsListener------------------------------
 
+        //----------------------------WidgetsParameters-----------------------------
         table.add(labelName).expand(0, 100).prefWidth(100).prefHeight(50);
         table.row(); // Inserta una fila
         table.add(fieldName).expandY().bottom().prefWidth(100).prefHeight(50);
@@ -76,7 +89,7 @@ public class MainMenu implements Screen {
         table.add(optionsButton).expandY().top().prefWidth(100).prefHeight(50);
         table.row();
         table.add(exitButton).expand().bottom().right().prefWidth(100).prefHeight(50);
-
+        //----------------------------WidgetsParameters-----------------------------
     }
 
     @Override
@@ -84,21 +97,28 @@ public class MainMenu implements Screen {
     }
 
     @Override
-    public void render(float delta) {
-        // delta = Tiempo que hay entre un frame y otro. Ej:   Frame1 -- 50ms -- Frame2
-        //-------------------------------------------------------------------
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1f); // Limpiamos la escena y le establecemos un fondo de color.
+    public void render(float delta) {// delta = Tiempo que hay entre un frame y otro. Ej:   Frame1 -- 50ms -- Frame2
+
+        // Limpiamos la escena y le establecemos un fondo de color.
+        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //-------------------------------------------------------------------
-        game.getSpriteBatch().begin(); // Inicio del batch, a partir de aca van todos los .draw().
-        stage.act(delta); // Actualizamos el stage mandandole delta.
-        stage.draw(); // Dibujamos el stage con la tabla y sus respectivos widgets.
-        game.getSpriteBatch().end(); // Fin del batch, no se dibuja mas y le enviamos el frame a la gpu.
+
+        // Inicio del batch, a partir de aca van todos los .draw().
+        game.getSpriteBatch().begin();
+
+        // Actualizamos el stage mandandole delta y dibujamos el stage.
+        stage.act(delta);
+        stage.draw();
+
+        // Fin del batch, a partir de aca no se dibuja nada que funcione con batch.
+        game.getSpriteBatch().end();
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true); // Redimensionamos el stage para que ocupe la ventana.
+
+        // Redimensionamos el stage para que ocupe la ventana.
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -115,7 +135,9 @@ public class MainMenu implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose(); // Limpiamos el stage.
+
+        // Limpiamos el stage.
+        stage.dispose();
     }
 
 }
