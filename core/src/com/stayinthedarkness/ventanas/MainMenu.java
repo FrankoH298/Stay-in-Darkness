@@ -41,7 +41,7 @@ public class MainMenu implements Screen {
         skin = new Skin(Gdx.files.internal("uiskin.json")); // Creamos una skin necesaria para los widgets.
         //---------------------------Widgets----------------------------------------
         TextButton playButton = new TextButton("Play", skin);
-        TextButton optionButton = new TextButton("Options",skin);
+        TextButton optionsButton = new TextButton("Options",skin);
         final TextButton exitButton = new TextButton("Exit",skin);
         Label labelName = new Label("Stay In Darkness", skin);
         TextField fieldName = new TextField("Ingrese su nombre", skin);
@@ -53,10 +53,19 @@ public class MainMenu implements Screen {
             }
             
         });
-        
+        //Esto es para cambiar a la ventana del juego
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                //game.setScreen(Nombre de la Ventana);
+            }
+        });
+        
+        //Esto es para cambiar a la venatana de opciones
+        optionsButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //game.setScreen(nombre de la ventana);
             }
             
         });
@@ -68,7 +77,7 @@ public class MainMenu implements Screen {
         table.row(); // Inserta una fila
         table.add(playButton).expandY().prefWidth(100).prefHeight(50);
         table.row(); // Inserta una fila 
-        table.add(optionButton).expandY().top().prefWidth(100).prefHeight(50);
+        table.add(optionsButton).expandY().top().prefWidth(100).prefHeight(50);
         table.row();
         table.add(exitButton).expand().bottom().right().prefWidth(100).prefHeight(50);
                 
