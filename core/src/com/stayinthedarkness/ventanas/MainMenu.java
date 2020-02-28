@@ -20,6 +20,13 @@ public class MainMenu implements Screen {
     private final Stage stage;
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
+    private TextButton playButton;
+    private TextButton exitButton;
+    private TextButton optionsButton;
+    private Label labelName;
+    private TextField fieldName;
+    private final I18NBundle bundle;
+    
 
     public MainMenu(final MainGame game) {
         this.game = game;
@@ -42,54 +49,12 @@ public class MainMenu implements Screen {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         // Cargamos los archivos de traduccion.
-        I18NBundle bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
-
-        //---------------------------------Widgets----------------------------------
-        TextButton playButton = new TextButton(bundle.get("MainMenu.playButton"), skin);
-        TextButton optionsButton = new TextButton(bundle.get("MainMenu.optionButton"), skin);
-        TextButton exitButton = new TextButton(bundle.get("MainMenu.exitButton"), skin);
-        Label labelName = new Label("Stay In Darkness", skin);
-        TextField fieldName = new TextField(bundle.get("MainMenu.fieldName"), skin);
-        //---------------------------------Widgets----------------------------------
-
-        //-----------------------------WidgetsListener------------------------------
-        exitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-
-        });
-
-        //Esto es para cambiar a la ventana del juego
-        playButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
-            }
-        });
-
-        //Esto es para cambiar a la ventana de opciones
-        optionsButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //game.setScreen(nombre de la ventana);
-            }
-
-        });
-        //-----------------------------WidgetsListener------------------------------
-
-        //----------------------------WidgetsParameters-----------------------------
-        table.add(labelName).expand(0, 100).prefWidth(100).prefHeight(50);
-        table.row(); // Inserta una fila
-        table.add(fieldName).expandY().bottom().prefWidth(100).prefHeight(50);
-        table.row(); // Inserta una fila
-        table.add(playButton).expandY().prefWidth(100).prefHeight(50);
-        table.row(); // Inserta una fila
-        table.add(optionsButton).expandY().top().prefWidth(100).prefHeight(50);
-        table.row();
-        table.add(exitButton).expand().bottom().right().prefWidth(100).prefHeight(50);
-        //----------------------------WidgetsParameters-----------------------------
+        bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
+        
+        // Inicializamos los widgets, seteamos los listeners y aplicamos parametros
+        widgetsInit();
+        widgetsListeners();
+        widgetsParameters();
     }
 
     @Override
@@ -138,6 +103,55 @@ public class MainMenu implements Screen {
 
         // Limpiamos el stage.
         stage.dispose();
+    }
+
+    private void widgetsInit() {
+        playButton = new TextButton(bundle.get("MainMenu.playButton"), skin);
+        optionsButton = new TextButton(bundle.get("MainMenu.optionButton"), skin);
+        exitButton = new TextButton(bundle.get("MainMenu.exitButton"), skin);
+        labelName = new Label("Stay In Darkness", skin);
+        fieldName = new TextField(bundle.get("MainMenu.fieldName"), skin);
+    }
+
+    private void widgetsListeners() {
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+
+        });
+
+        //Esto es para cambiar a la ventana del juego
+        playButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen(game));
+            }
+        });
+
+        //Esto es para cambiar a la ventana de opciones
+        optionsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new OptionsScreen(game));
+            }
+
+        });
+
+    }
+    
+    private void widgetsParameters(){
+        table.add(labelName).expand(0, 100).prefWidth(100).prefHeight(50);
+        table.row(); // Inserta una fila
+        table.add(fieldName).expandY().bottom().prefWidth(100).prefHeight(50);
+        table.row(); // Inserta una fila
+        table.add(playButton).expandY().prefWidth(100).prefHeight(50);
+        table.row(); // Inserta una fila
+        table.add(optionsButton).expandY().top().prefWidth(100).prefHeight(50);
+        table.row();
+        table.add(exitButton).expand().bottom().right().prefWidth(100).prefHeight(50);
+        
     }
 
 }
