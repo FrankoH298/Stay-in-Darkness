@@ -20,9 +20,8 @@ public class MainMenu implements Screen {
     private final Stage stage;
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
-    private String name;
 
-    public MainMenu(MainGame game) {
+    public MainMenu(final MainGame game) {
         this.game = game;
         //-------------------------------Stage------------------------------------
         stage = new Stage();
@@ -55,11 +54,11 @@ public class MainMenu implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //game.setScreen(Nombre de la Ventana);
+                game.setScreen(new GameScreen(game));
             }
         });
 
-        //Esto es para cambiar a la venatana de opciones
+        //Esto es para cambiar a la ventana de opciones
         optionsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
