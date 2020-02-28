@@ -21,8 +21,8 @@ public class IOFiles {
 
             oos.writeBytes(text);
             oos.flush();
-            byte[] datos = out.toByteArray();
-            file.writeBytes(datos, false);
+            byte[] datos = out.toByteArray(); // String a array de bytes.
+            file.writeBytes(datos, false); // Escribimos el array de bytes en el archivo.
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,10 +34,10 @@ public class IOFiles {
         ObjectInputStream ois;
         String text = "";
         try {
-            in = new ByteArrayInputStream(file.readBytes());
+            in = new ByteArrayInputStream(file.readBytes()); // Lector de array de bytes.
             ois = new ObjectInputStream(in);
 
-            text = ois.readLine();
+            text = ois.readLine(); // Metodo deprecado, hay que cambiar esto.
         } catch (IOException e) {
             e.printStackTrace();
         }

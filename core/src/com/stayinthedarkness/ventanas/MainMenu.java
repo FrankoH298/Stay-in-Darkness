@@ -10,19 +10,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.stayinthedarkness.MainGame;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.stayinthedarkness.StayintheDarkness;
 
 public class MainMenu implements Screen {
 
-    private final StayintheDarkness game;
+    private final MainGame game;
     private final Stage stage;
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
     private String name;
 
-    public MainMenu(StayintheDarkness game) {
+    public MainMenu(MainGame game) {
         this.game = game;
         //-------------------------------Stage------------------------------------
         stage = new Stage();

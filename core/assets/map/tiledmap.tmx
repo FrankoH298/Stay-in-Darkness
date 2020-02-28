@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="left-down" compressionlevel="-1" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="4">
+ <tileset firstgid="1" name="wood_tileset" tilewidth="32" tileheight="32" tilecount="256" columns="16">
+  <image source="wood_tileset.png" width="512" height="512"/>
+ </tileset>
+ <layer id="1" name="background" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztzqERgEAMALAqYAJgAmCO338oanHU9f4i4jMiYgAAAB9LWou2Bu9Z7ekoOhu8Z3Wlu+hp8AYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+OsFEAwLqQ==
+  </data>
+ </layer>
+ <objectgroup id="2" name="solid">
+  <object id="2" x="448" y="224" width="448" height="96"/>
+ </objectgroup>
+</map>
