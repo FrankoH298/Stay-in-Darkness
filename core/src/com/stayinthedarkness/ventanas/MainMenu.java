@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.stayinthedarkness.StayintheDarkness;
 
@@ -24,9 +25,7 @@ public class MainMenu implements Screen {
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
     private String name;
-    
-            
-            
+  
     public MainMenu(StayintheDarkness game) {
         this.game = game;
         //-------------------------------Stage------------------------------------
@@ -39,13 +38,16 @@ public class MainMenu implements Screen {
         stage.addActor(table);
         //-----------------------------Skins--------------------------------------
         skin = new Skin(Gdx.files.internal("uiskin.json")); // Creamos una skin necesaria para los widgets.
+
+        // Cargamos los archivos de traduccion.
+        I18NBundle bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
+
         //---------------------------Widgets----------------------------------------
-        TextButton playButton = new TextButton("Play", skin);
-        TextButton optionsButton = new TextButton("Options",skin);
-        final TextButton exitButton = new TextButton("Exit",skin);
+        TextButton playButton = new TextButton(bundle.get("MainMenu.playButton"), skin);
+        TextButton optionButton = new TextButton(bundle.get("MainMenu.optionButton"), skin);
+        TextButton exitButton = new TextButton(bundle.get("MainMenu.exitButton"), skin);
         Label labelName = new Label("Stay In Darkness", skin);
-        TextField fieldName = new TextField("Ingrese su nombre", skin);
-        
+        TextField fieldName = new TextField(bundle.get("MainMenu.fieldName"), skin);
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -80,7 +82,7 @@ public class MainMenu implements Screen {
         table.add(optionsButton).expandY().top().prefWidth(100).prefHeight(50);
         table.row();
         table.add(exitButton).expand().bottom().right().prefWidth(100).prefHeight(50);
-                
+
     }
 
     @Override
