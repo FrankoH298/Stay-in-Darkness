@@ -14,10 +14,6 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.stayinthedarkness.StayintheDarkness;
 
-/**
- *
- * @author franc
- */
 public class MainMenu implements Screen {
 
     private final StayintheDarkness game;

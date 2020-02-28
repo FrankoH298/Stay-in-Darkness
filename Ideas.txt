@@ -1,5 +1,3 @@
-juego 2d
-fitviewport
 armas modulares
 accesorios compartidos
 personaje modular
