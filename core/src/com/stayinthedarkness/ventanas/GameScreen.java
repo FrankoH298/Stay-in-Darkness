@@ -132,5 +132,9 @@ public class GameScreen implements Screen {
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             camera.translate(-velocity, 0);
         }
+        
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            game.setScreen(new MainMenu(game));
+        }
     }
 }
