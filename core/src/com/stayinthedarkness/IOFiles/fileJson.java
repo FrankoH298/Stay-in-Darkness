@@ -1,8 +1,5 @@
 package com.stayinthedarkness.IOFiles;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Json;
 import java.util.ArrayList;
 
 public class fileJson {
@@ -46,12 +43,18 @@ public class fileJson {
         int a;
         int b;
         String value = null;
-        for (a = 0; a < indexs.size(); a++) { // Recorre los indices.
-            if (indexs.get(a).name.equals(index)) { // Si es igual al indice buscado.
+
+        // Recorre los indices.
+        for (a = 0; a < indexs.size(); a++) {
+            // Si es igual al indice buscado.
+            if (indexs.get(a).name.equals(index)) {
                 ArrayList<var> vars = indexs.get(a).vars;
-                for (b = 0; b < vars.size(); b++) { // Recorre las variables.
-                    if (vars.get(b).name.equals(var)) { // Si es igual a la variable buscada.
-                        value = vars.get(b).value; // Nos retorna el valor de la variable.
+                // Recorre las variables.
+                for (b = 0; b < vars.size(); b++) {
+                    // Si es igual a la variable buscada.
+                    if (vars.get(b).name.equals(var)) {
+                        // Nos retorna el valor de la variable.
+                        value = vars.get(b).value;
                     }
                 }
             }
