@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.stayinthedarkness.MainGame;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.stayinthedarkness.StayintheDarkness;
 
 public class MainMenu implements Screen {
 
