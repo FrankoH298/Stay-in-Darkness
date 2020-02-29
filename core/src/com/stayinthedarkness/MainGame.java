@@ -30,6 +30,7 @@ public class MainGame extends Game {
     public void dispose() {
         super.dispose();
         batch.dispose();
+
     }
 
     public SpriteBatch getSpriteBatch() {
