@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -30,6 +31,8 @@ public class OptionsScreen implements Screen {
     private Label labelSettings;
     private final I18NBundle bundle;
     private TextButton BackButton;
+    private Slider soundSlider;
+    private Label soundLabel;
 
     public OptionsScreen(final MainGame game) {
         this.game = game;
@@ -45,7 +48,7 @@ public class OptionsScreen implements Screen {
         table.setFillParent(true);
 
         // Muestra los bordes de los widgets.
-        table.setDebug(true);
+        table.setDebug(false);
         stage.addActor(table);
 
         // Creamos una skin necesaria para los widgets.
@@ -123,6 +126,8 @@ public class OptionsScreen implements Screen {
         nextResolutionBtn = new TextButton(">", skin);
         BackButton = new TextButton(bundle.get("MainMenu.BackButton"), skin);
         labelSettings = new Label(bundle.get("MainMenu.labelSettings"), skin);
+        soundSlider = new Slider(0, 100, 1, false, skin);
+        soundLabel = new Label(bundle.get("MainMenu.soundLabel"), skin);
         
     }
 
@@ -156,13 +161,16 @@ public class OptionsScreen implements Screen {
     private void widgetsParameters(){
         table.add(labelSettings).colspan(4).expand(Gdx.graphics.getWidth(),1);
         table.row(); // Inserta una fila
-        table.add(fullscreenLabel).expand().left();
+        table.add(fullscreenLabel).expand().right();
         table.add(fullscreenCheckBox).expand().colspan(3).size(100);
         table.row(); // Inserta una fila
-        table.add(resolutionLabel).expand().left();
-        table.add(previousResolutionBtn).expand().width(20).height(30);
+        table.add(resolutionLabel).expand().right();
+        table.add(previousResolutionBtn).expand().width(20).height(30).right();
         table.add(actualResLabel).expand();
-        table.add(nextResolutionBtn).expand().width(20).height(30);
+        table.add(nextResolutionBtn).expand().width(20).height(30).left();
+        table.row();
+        table.add(soundLabel).expand().right();
+        table.add(soundSlider).expand().colspan(3);
         table.row();
         table.add(BackButton).expand().left().bottom().width(100).height(50);
         
