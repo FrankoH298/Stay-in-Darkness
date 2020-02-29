@@ -30,7 +30,7 @@ public class OptionsScreen implements Screen {
     private TextButton nextResolutionBtn;
 
     
-    private Label labelName;
+    private Label labelSettings;
     
     private final I18NBundle bundle;
     private TextButton BackButton;
@@ -124,7 +124,7 @@ public class OptionsScreen implements Screen {
         previousResolutionBtn = new TextButton(bundle.get("MainMenu.previousResolutionBtn"), skin);
         nextResolutionBtn = new TextButton(bundle.get("MainMenu.nextResolutionBtn"), skin);
         BackButton = new TextButton(bundle.get("MainMenu.BackButton"), skin);
-        labelName = new Label("Stay In Darkness", skin);
+        labelSettings = new Label(bundle.get("MainMenu.labelSettings"), skin);
         
     }
 
@@ -141,25 +141,32 @@ public class OptionsScreen implements Screen {
         fullscreenCheckBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                
+                if(fullscreenCheckBox.isChecked()){
+                    Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+                }else{
+                    Gdx.graphics.setWindowedMode(800, 600);
+                }
             }
         });
+        
+
 
        
     }
     
     private void widgetsParameters(){
-        table.add(labelName).colspan(4).expand(Gdx.graphics.getWidth(),1);
+        table.add(labelSettings).colspan(4).expand(Gdx.graphics.getWidth(),1);
         table.row(); // Inserta una fila
         table.add(fullscreenLabel).expand().left();
-        table.add(fullscreenCheckBox).expand().colspan(3);
+        table.add(fullscreenCheckBox).expand().colspan(3).size(100);
         table.row(); // Inserta una fila
         table.add(resolutionLabel).expand().left();
-        table.add(previousResolutionBtn).expand();
+        table.add(previousResolutionBtn).expand().width(20).height(30);
         table.add(actualResLabel).expand();
-        table.add(nextResolutionBtn).expand();
+        table.add(nextResolutionBtn).expand().width(20).height(30);
         table.row();
-        table.add(BackButton).expand().left().bottom();
+        table.add(BackButton).expand().left().bottom().width(100).height(50);
         
     }
 
