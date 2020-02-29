@@ -23,15 +23,11 @@ public class OptionsScreen implements Screen {
     private final Skin skin;
     private CheckBox fullscreenCheckBox;
     private Label fullscreenLabel;
-    
     private Label resolutionLabel;
     private Label actualResLabel;
     private TextButton previousResolutionBtn;
     private TextButton nextResolutionBtn;
-
-    
     private Label labelSettings;
-    
     private final I18NBundle bundle;
     private TextButton BackButton;
 
@@ -64,6 +60,7 @@ public class OptionsScreen implements Screen {
         widgetsParameters();
         
         
+        
        
         
     }
@@ -81,6 +78,7 @@ public class OptionsScreen implements Screen {
 
         // Inicio del batch, a partir de aca van todos los .draw().
         game.getSpriteBatch().begin();
+        
 
         // Actualizamos el stage mandandole delta y dibujamos el stage.
         stage.act(delta);
@@ -117,12 +115,12 @@ public class OptionsScreen implements Screen {
     }
 
     private void widgetsInit() {
-        fullscreenCheckBox = new CheckBox(bundle.get("MainMenu.fullscreenCheckBox"), skin);
+        fullscreenCheckBox = new CheckBox("", skin);
         fullscreenLabel = new Label(bundle.get("MainMenu.fullscreenLabel"), skin);
         resolutionLabel = new Label(bundle.get("MainMenu.resolutionLabel"), skin);
-        actualResLabel = new Label(bundle.get("MainMenu.actualResLabel"), skin);
-        previousResolutionBtn = new TextButton(bundle.get("MainMenu.previousResolutionBtn"), skin);
-        nextResolutionBtn = new TextButton(bundle.get("MainMenu.nextResolutionBtn"), skin);
+        actualResLabel = new Label("e.x 1920x1080", skin);
+        previousResolutionBtn = new TextButton("<", skin);
+        nextResolutionBtn = new TextButton(">", skin);
         BackButton = new TextButton(bundle.get("MainMenu.BackButton"), skin);
         labelSettings = new Label(bundle.get("MainMenu.labelSettings"), skin);
         
