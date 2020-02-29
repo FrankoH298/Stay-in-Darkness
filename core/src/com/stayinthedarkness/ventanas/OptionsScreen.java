@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.stayinthedarkness.MainGame;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -150,6 +151,8 @@ public class OptionsScreen implements Screen {
                 }else{
                     Gdx.graphics.setWindowedMode(800, 600);
                 }
+                // Creamos un nuevo viewport con el nuevo tamaño de la ventana.
+                reloadViewport();
             }
         });
         
@@ -175,5 +178,7 @@ public class OptionsScreen implements Screen {
         table.add(BackButton).expand().left().bottom().width(100).height(50);
         
     }
-
+    private void reloadViewport(){
+        stage.setViewport(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
+    }
 }
