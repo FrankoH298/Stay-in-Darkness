@@ -85,6 +85,7 @@ com_crashlytics_export_strings.xml
 /ios/dist/
 /ios-moe/dist/
 
+/.nb-gradle/
 /nbdist/
 /android/nbdist/
 /core/nbdist/
