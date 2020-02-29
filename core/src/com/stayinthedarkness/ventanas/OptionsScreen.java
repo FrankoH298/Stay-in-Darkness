@@ -1,14 +1,71 @@
 package com.stayinthedarkness.ventanas;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.stayinthedarkness.MainGame;
+import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class OptionsScreen implements Screen {
 
-    private MainGame game;
+    private final MainGame game;
+    private final Stage stage;
+    private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
+    private final Skin skin;
+    private CheckBox fullscreenCheckBox;
+    private Label fullscreenLabel;
+    
+    private Label resolutionLabel;
+    private Label actualResLabel;
+    private TextButton previousResolutionBtn;
+    private TextButton nextResolutionBtn;
 
-    public OptionsScreen(MainGame game) {
+    
+    private Label labelName;
+    
+    private final I18NBundle bundle;
+    private TextButton BackButton;
+
+    public OptionsScreen(final MainGame game) {
         this.game = game;
+
+        // Seteamos para el que stage controle la entrada del teclado.
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
+        // Creamos la ventana.
+        table = new Table();
+
+        // Necesario para que la tabla ocupe toda la ventana.
+        table.setFillParent(true);
+
+        // Muestra los bordes de los widgets.
+        table.setDebug(true);
+        stage.addActor(table);
+
+        // Creamos una skin necesaria para los widgets.
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
+
+        // Cargamos los archivos de traduccion.
+        bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
+        
+        // Inicializamos los widgets, seteamos los listeners y aplicamos parametros
+        widgetsInit();
+        widgetsListeners();
+        widgetsParameters();
+        
+        
+       
+        
     }
 
     @Override
@@ -16,11 +73,28 @@ public class OptionsScreen implements Screen {
     }
 
     @Override
-    public void render(float delta) {
+    public void render(float delta) {// delta = Tiempo que hay entre un frame y otro. Ej:   Frame1 -- 50ms -- Frame2
+
+        // Limpiamos la escena y le establecemos un fondo de color.
+        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Inicio del batch, a partir de aca van todos los .draw().
+        game.getSpriteBatch().begin();
+
+        // Actualizamos el stage mandandole delta y dibujamos el stage.
+        stage.act(delta);
+        stage.draw();
+
+        // Fin del batch, a partir de aca no se dibuja nada que funcione con batch.
+        game.getSpriteBatch().end();
     }
 
     @Override
     public void resize(int width, int height) {
+
+        // Redimensionamos el stage para que ocupe la ventana.
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -37,6 +111,56 @@ public class OptionsScreen implements Screen {
 
     @Override
     public void dispose() {
+
+        // Limpiamos el stage.
+        stage.dispose();
+    }
+
+    private void widgetsInit() {
+        fullscreenCheckBox = new CheckBox(bundle.get("MainMenu.fullscreenCheckBox"), skin);
+        fullscreenLabel = new Label(bundle.get("MainMenu.fullscreenLabel"), skin);
+        resolutionLabel = new Label(bundle.get("MainMenu.resolutionLabel"), skin);
+        actualResLabel = new Label(bundle.get("MainMenu.actualResLabel"), skin);
+        previousResolutionBtn = new TextButton(bundle.get("MainMenu.previousResolutionBtn"), skin);
+        nextResolutionBtn = new TextButton(bundle.get("MainMenu.nextResolutionBtn"), skin);
+        BackButton = new TextButton(bundle.get("MainMenu.BackButton"), skin);
+        labelName = new Label("Stay In Darkness", skin);
+        
+    }
+
+    private void widgetsListeners() {
+        BackButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MainMenu(game));
+            }
+
+        });
+
+        //Esto es para cambiar a la ventana del juego
+        fullscreenCheckBox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen(game));
+            }
+        });
+
+       
+    }
+    
+    private void widgetsParameters(){
+        table.add(labelName).colspan(4).expand(Gdx.graphics.getWidth(),1);
+        table.row(); // Inserta una fila
+        table.add(fullscreenLabel).expand().left();
+        table.add(fullscreenCheckBox).expand().colspan(3);
+        table.row(); // Inserta una fila
+        table.add(resolutionLabel).expand().left();
+        table.add(previousResolutionBtn).expand();
+        table.add(actualResLabel).expand();
+        table.add(nextResolutionBtn).expand();
+        table.row();
+        table.add(BackButton).expand().left().bottom();
+        
     }
 
 }
