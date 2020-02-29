@@ -3,11 +3,11 @@ package com.stayinthedarkness.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.stayinthedarkness.world.worldPos;
+import com.stayinthedarkness.world.WorldPosition;
 
 public abstract class Entity {
     private int id;
-    private worldPos position;
+    private WorldPosition position;
     private Batch batch;
 
     public int getId() {
@@ -18,17 +18,17 @@ public abstract class Entity {
         this.id = id;
     }
 
-    public worldPos getPosition() {
+    public WorldPosition getPosition() {
         return position;
     }
 
-    public void setPosition(worldPos position) {
+    public void setPosition(WorldPosition position) {
         this.position = position;
     }
 
     public Entity(Batch batch, float x, float y) {
         this.batch = batch;
-        this.position = new worldPos(x, y);
+        this.position = new WorldPosition(x, y);
     }
 
 

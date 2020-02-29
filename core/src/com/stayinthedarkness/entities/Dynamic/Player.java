@@ -1,4 +1,4 @@
-package com.stayinthedarkness.entities.dynamic;
+package com.stayinthedarkness.entities.Dynamic;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.stayinthedarkness.entities.Entity;

@@ -5,12 +5,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
-public class World {
+public class TiledMapSiD {
     private final TmxMapLoader mapLoader;
-    private final TiledMap map;
+    private final com.badlogic.gdx.maps.tiled.TiledMap map;
     private final OrthogonalTiledMapRenderer rendererMap;
 
-    public World(Batch batch) {
+    public TiledMapSiD(Batch batch) {
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("map/tiledmap.tmx");
         rendererMap = new OrthogonalTiledMapRenderer(map, batch);
@@ -24,7 +24,7 @@ public class World {
         return mapLoader;
     }
 
-    public TiledMap getMap() {
+    public com.badlogic.gdx.maps.tiled.TiledMap getMap() {
         return map;
     }
 

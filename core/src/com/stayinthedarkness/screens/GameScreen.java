@@ -8,13 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.stayinthedarkness.MainGame;
 import com.stayinthedarkness.entities.Solid.Tree;
-import com.stayinthedarkness.world.World;
+import com.stayinthedarkness.world.TiledMapSiD;
 
 public class GameScreen implements Screen {
 
@@ -24,7 +21,7 @@ public class GameScreen implements Screen {
     private final OrthographicCamera camera;
     private final FitViewport viewPort;
     private final BitmapFont font;
-    private final World world;
+    private final TiledMapSiD tiledMapSiD;
     private float velocity;
     private Tree tree1;
 
@@ -43,7 +40,7 @@ public class GameScreen implements Screen {
         camera.position.set(viewPort.getWorldWidth() / 2f, viewPort.getWorldHeight() / 2f, 0);
         font = new BitmapFont();
         ////////////////////////////////////////////////////////////////////////////////
-        world = new World(batch);
+        tiledMapSiD = new TiledMapSiD(batch);
 
         tree1 = new Tree(batch, 0, 0, new Texture(Gdx.files.internal("graphics/tree.png")));
     }
@@ -58,7 +55,7 @@ public class GameScreen implements Screen {
         // Actualiza la camara.
         camera.update();
         // Le seteamos la camara al renderizado del mapa.
-        world.getRendererMap().setView(camera);
+        tiledMapSiD.getRendererMap().setView(camera);
     }
 
     @Override
@@ -72,7 +69,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Renderizamos el mapa fuera del batch ya que este lo vuelve a iniciar y terminar.
-        world.getRendererMap().render();
+        tiledMapSiD.getRendererMap().render();
 
         // Al batch le va a setear la matriz de la camara y inicia el batch.
         batch.setProjectionMatrix(camera.combined);
@@ -108,7 +105,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         font.dispose();
-        world.dispose();
+        tiledMapSiD.dispose();
     }
 
     private void drawText(BitmapFont font, SpriteBatch batch, String text, float x, float y, float r, float g, float b, float a) {

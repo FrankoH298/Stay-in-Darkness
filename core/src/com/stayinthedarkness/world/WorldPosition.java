@@ -1,10 +1,10 @@
 package com.stayinthedarkness.world;
 
-public class worldPos {
+public class WorldPosition {
     private float x;
     private float y;
 
-    public worldPos(float x, float y) {
+    public WorldPosition(float x, float y) {
         this.x = x;
         this.y = y;
     }
