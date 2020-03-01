@@ -26,7 +26,6 @@ public class GameScreen implements Screen {
     private final BitmapFont font;
     private final TiledMapSiD tiledMapSiD;
     private float velocity;
-    private Tree tree1;
 
     public GameScreen(MainGame game) {
         this.game = game;
@@ -76,7 +75,6 @@ public class GameScreen implements Screen {
         // Al batch le va a setear la matriz de la camara y inicia el batch.
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        tree1.render();
 
         // Mostramos los fps en la esquina izquierda-arriba de la ventana.
         drawText(font, batch, "FPS:" + Integer.toString(Gdx.graphics.getFramesPerSecond()), -(viewPort.getWorldWidth() / 2) + 10, (viewPort.getWorldHeight() / 2) - 10, 1f, 1f, 1f, 1f);
