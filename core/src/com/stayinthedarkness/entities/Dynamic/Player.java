@@ -19,4 +19,12 @@ public class Player extends Entity.Dynamic {
     public Player(int id, int grhNumber, float x, float y) {
         super(id, grhNumber, x, y);
     }
+
+    public float getCenterPositionW(float delta) {
+        return (super.getFrame(delta).getRegionWidth() / 2);
+    }
+
+    public float getCenterPositionH(float delta) {
+        return (super.getFrame(delta).getRegionHeight() / 2);
+    }
 }

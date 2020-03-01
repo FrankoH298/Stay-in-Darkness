@@ -49,6 +49,7 @@ public class GameScreen implements Screen {
 
         // Seteamos la posicion de la camara en la mitad de la ventana.
         camera.position.set(viewPort.getWorldWidth() / 2f, viewPort.getWorldHeight() / 2f, 0);
+
         font = new BitmapFont();
         ////////////////////////////////////////////////////////////////////////////////
         tiledMapSiD = new TiledMapSiD(batch);
@@ -70,8 +71,9 @@ public class GameScreen implements Screen {
         // Procesamos la entrada
         handleInput(delta);
         // Actualiza la camara.
+        camera.position.set(myPlayer.getPosition().getX() + myPlayer.getCenterPositionW(delta), myPlayer.getPosition().getY() + myPlayer.getCenterPositionH(delta), 0);
         camera.update();
-        camera.position.set(myPlayer.getPosition().getX(), myPlayer.getPosition().getY(), 0);
+
         // Le seteamos la camara al renderizado del mapa.
         tiledMapSiD.getRendererMap().setView(camera);
 
