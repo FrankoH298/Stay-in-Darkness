@@ -26,6 +26,7 @@ public class ServerNetworkListener extends Listener {
         if (o instanceof Packets.Packet00Message) {
             Packets.Packet00Message p = (Packets.Packet00Message) o;
             System.out.println("[CLIENT]: " + p.message);
+
         }
     }
 }

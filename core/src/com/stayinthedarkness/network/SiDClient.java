@@ -4,10 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.stayinthedarkness.screens.GameScreen;
+import com.stayinthedarkness.screens.MainMenu;
 
 import java.io.IOException;
 
 public class SiDClient {
+
+    // Private class
+    private GameScreen screenGame;
+    private MainMenu screenMainMenu;
 
     // Connection info
     private int TCPPort = 7666;

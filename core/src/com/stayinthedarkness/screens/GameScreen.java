@@ -6,10 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -35,10 +34,14 @@ public class GameScreen implements Screen {
     private Player myPlayer;
     private Player secondPlayer;
     private ArrayList<Player> players;
+    private Array<String> console;
 
 
     public GameScreen(MainGame game) {
+
+        // Conectamos con el servidor.
         SiDClient client = new SiDClient();
+
         this.game = game;
         this.batch = game.getSpriteBatch();
 
@@ -49,12 +52,18 @@ public class GameScreen implements Screen {
         viewPort = new ScalingViewport(Scaling.fit, MainGame.V_WIDTH, MainGame.V_HEIGHT, camera);
         viewPort.apply();
 
+        // Cambiamos el input processor para evitar errores.
+        Gdx.input.setInputProcessor(new Stage());
+
         // Seteamos la posicion de la camara en la mitad de la ventana.
         camera.position.set(viewPort.getWorldWidth() / 2f, viewPort.getWorldHeight() / 2f, 0);
 
         font = new BitmapFont();
         ////////////////////////////////////////////////////////////////////////////////
         tiledMapSiD = new TiledMapSiD(batch);
+
+        // Inicializamos la consola con un tamaño de 4.
+        initConsole(4);
 
         myPlayer = new Player(0, 1, 0, 0);
         secondPlayer = new Player(1, 1, 50, 100);
@@ -72,6 +81,7 @@ public class GameScreen implements Screen {
     public void update(float delta) {
         // Procesamos la entrada
         handleInput(delta);
+
         // Actualiza la camara.
         camera.position.set(myPlayer.getPosition().getX() + myPlayer.getCenterPositionW(delta), myPlayer.getPosition().getY() + myPlayer.getCenterPositionH(delta), 0);
         camera.update();
@@ -102,6 +112,9 @@ public class GameScreen implements Screen {
 
         // Mostramos los fps en la esquina izquierda-arriba de la ventana.
         drawText(font, batch, "FPS:" + Integer.toString(Gdx.graphics.getFramesPerSecond()), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 10f, 1f, 1f, 1f, 1f);
+
+        // Renderizamos la consola.
+        renderConsole(batch);
 
         // Renderizamos modo debug. (Muestra posiciones).
         renderDebug();
@@ -193,5 +206,25 @@ public class GameScreen implements Screen {
         drawText(font, batch, "vpScreenWidth:" + Float.toString(viewPort.getScreenWidth()), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 190f, 1f, 1f, 1f, 1f);
         drawText(font, batch, "vpScreenHeight:" + Float.toString(viewPort.getScreenHeight()), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 210f, 1f, 1f, 1f, 1f);
 
+    }
+
+    private void initConsole(int size) {
+        console = new Array<String>();
+        for (int a = 0; a < size; a++) {
+            console.add("");
+        }
+    }
+
+    private void consoleTextAdd(String msg) {
+        for (int a = console.size - 1; a > 0; a--) {
+            console.set(a, console.get(a - 1));
+        }
+        console.set(0, msg);
+    }
+
+    private void renderConsole(SpriteBatch batch) {
+        for (int a = 0; a < console.size; a++) {
+            drawText(font, batch, console.get(a), (-(viewPort.getWorldWidth() / 2) + 10f), (-(viewPort.getWorldHeight() / 2) + 30f + (20f * a)), 1f, 1f, 1f, 1f - (0.2f * a));
+        }
     }
 }
