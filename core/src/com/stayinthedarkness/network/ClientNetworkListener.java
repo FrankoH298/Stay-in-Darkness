@@ -1,14 +1,18 @@
 package com.stayinthedarkness.network;
 
+
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.stayinthedarkness.MainGame;
 
 public class ClientNetworkListener extends Listener {
     private Client client;
+    private MainGame game;
 
-    public ClientNetworkListener(Client client) {
+    public ClientNetworkListener(Client client, MainGame game) {
         this.client = client;
+        this.game = game;
     }
 
     public void connected(Connection c) {
@@ -22,7 +26,8 @@ public class ClientNetworkListener extends Listener {
     public void received(Connection c, Object o) {
         if (o instanceof Packets.Packet00Message) {
             Packets.Packet00Message p = (Packets.Packet00Message) o;
-            System.out.println("[SERVER]:" + p.message);
+            System.out.println("[SERVER]: " + p.message);
+            game.menu.gameScreen.consoleTextAdd("[SERVER]: " + p.message);
         }
     }
 }

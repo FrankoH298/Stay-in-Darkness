@@ -2,23 +2,28 @@ package server.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.Server;
 import server.serverLauncher;
 
 public class ServerNetworkListener extends Listener {
-    serverLauncher SiDServer;
+    private Server SiDServer;
 
-    public ServerNetworkListener(serverLauncher SiDServer) {
+    public ServerNetworkListener(Server SiDServer) {
         this.SiDServer = SiDServer;
     }
 
     @Override
     public void connected(Connection c) {
-        System.out.println("Alguien se conecto");
+        Packets.Packet00Message p = new Packets.Packet00Message();
+        p.message = "ID:" + c.getID() + " se conectó";
+        SiDServer.sendToAllExceptTCP(c.getID(), p);
     }
 
     @Override
     public void disconnected(Connection c) {
-        System.out.println("Alguien se desconecto");
+        Packets.Packet00Message p = new Packets.Packet00Message();
+        p.message = "ID:" + c.getID() + " se desconectó";
+        SiDServer.sendToAllExceptTCP(c.getID(), p);
     }
 
     @Override

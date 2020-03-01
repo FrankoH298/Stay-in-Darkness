@@ -39,11 +39,11 @@ public class GameScreen implements Screen {
 
     public GameScreen(MainGame game) {
 
-        // Conectamos con el servidor.
-        SiDClient client = new SiDClient();
-
         this.game = game;
         this.batch = game.getSpriteBatch();
+
+        // Conectamos con el servidor.
+        SiDClient client = new SiDClient(game);
 
         // Creamos una camara.
         this.camera = new OrthographicCamera();
@@ -215,7 +215,8 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void consoleTextAdd(String msg) {
+    public void consoleTextAdd(String msg) {
+        System.out.println("a");
         for (int a = console.size - 1; a > 0; a--) {
             console.set(a, console.get(a - 1));
         }

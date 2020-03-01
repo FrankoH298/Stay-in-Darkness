@@ -20,6 +20,7 @@ public class MainMenu implements Screen {
     private final Stage stage;
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
+    public GameScreen gameScreen;
 
     public MainMenu(final MainGame game) {
         this.game = game;
@@ -65,7 +66,8 @@ public class MainMenu implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                gameScreen = new GameScreen(game);
+                game.setScreen(gameScreen);
             }
         });
 

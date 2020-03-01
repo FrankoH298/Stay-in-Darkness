@@ -1,8 +1,10 @@
 package com.stayinthedarkness.network;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
+import com.stayinthedarkness.MainGame;
 import com.stayinthedarkness.screens.GameScreen;
 import com.stayinthedarkness.screens.MainMenu;
 
@@ -11,8 +13,7 @@ import java.io.IOException;
 public class SiDClient {
 
     // Private class
-    private GameScreen screenGame;
-    private MainMenu screenMainMenu;
+    private Game game;
 
     // Connection info
     private int TCPPort = 7666;
@@ -23,10 +24,10 @@ public class SiDClient {
     private Client client;
     private ClientNetworkListener clientListener;
 
-    public SiDClient() {
+    public SiDClient(MainGame game) {
         // Initialize client
         client = new Client();
-        clientListener = new ClientNetworkListener(client);
+        clientListener = new ClientNetworkListener(client, game);
 
         // Add listener
         registerPackets();

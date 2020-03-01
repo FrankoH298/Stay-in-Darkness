@@ -19,7 +19,7 @@ public class serverLauncher {
 
     public serverLauncher() {
         server = new Server();
-        serverListener = new ServerNetworkListener(this);
+        serverListener = new ServerNetworkListener(server);
         server.addListener(serverListener);
 
 
