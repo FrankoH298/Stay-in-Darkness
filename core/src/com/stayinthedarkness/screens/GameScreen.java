@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stayinthedarkness.MainGame;
 import com.stayinthedarkness.entities.Dynamic.Player;
 import com.stayinthedarkness.entities.Solid.Tree;
+import com.stayinthedarkness.network.SiDClient;
 import com.stayinthedarkness.world.TiledMapSiD;
 import com.stayinthedarkness.world.WorldPosition;
 
@@ -37,6 +38,7 @@ public class GameScreen implements Screen {
 
 
     public GameScreen(MainGame game) {
+        SiDClient client = new SiDClient();
         this.game = game;
         this.batch = game.getSpriteBatch();
 

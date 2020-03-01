@@ -1,6 +1,9 @@
 package server;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Server;
+import server.network.Packets;
+import server.network.ServerNetworkListener;
 
 import java.io.IOException;
 
@@ -12,14 +15,29 @@ public class serverLauncher {
 
     // Kryonet Server
     private Server server;
+    private ServerNetworkListener serverListener;
 
     public serverLauncher() {
         server = new Server();
+        serverListener = new ServerNetworkListener(this);
+        server.addListener(serverListener);
+
+
         try {
             server.bind(TCPPort, UDPPort);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        registerPackets();
+
+        // Start server
+        server.start();
+    }
+
+    private void registerPackets() {
+        Kryo kryo = server.getKryo();
+        kryo.register(Packets.Packet00Message.class);
     }
 
     public static void main(String[] arg) {
