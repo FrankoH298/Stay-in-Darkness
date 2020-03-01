@@ -16,7 +16,7 @@ public class Player extends Entity.Dynamic {
     private Gold gold;
 
 
-    public Player(int id, float x, float y) {
-        super(id, x, y);
+    public Player(int id, int grhNumber, float x, float y) {
+        super(id, grhNumber, x, y);
     }
 }

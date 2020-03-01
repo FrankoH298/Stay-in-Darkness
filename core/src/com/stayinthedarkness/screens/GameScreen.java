@@ -20,6 +20,8 @@ import com.stayinthedarkness.entities.Solid.Tree;
 import com.stayinthedarkness.world.TiledMapSiD;
 import com.stayinthedarkness.world.WorldPosition;
 
+import java.util.ArrayList;
+
 public class GameScreen implements Screen {
 
     // VARIABLES
@@ -29,9 +31,9 @@ public class GameScreen implements Screen {
     private final Viewport viewPort;
     private final BitmapFont font;
     private final TiledMapSiD tiledMapSiD;
-    private float velocity;
     private Player myPlayer;
     private Player secondPlayer;
+    private ArrayList<Player> players;
 
 
     public GameScreen(MainGame game) {
@@ -42,7 +44,7 @@ public class GameScreen implements Screen {
         this.camera = new OrthographicCamera();
 
         // FitViewport sirve para que al redimensionar el tamaño de la ventana se mantenga la escala.
-        viewPort = new ScalingViewport(Scaling.none, MainGame.V_WIDTH, MainGame.V_HEIGHT, camera);
+        viewPort = new ScalingViewport(Scaling.fit, MainGame.V_WIDTH, MainGame.V_HEIGHT, camera);
         viewPort.apply();
 
         // Seteamos la posicion de la camara en la mitad de la ventana.
@@ -50,11 +52,14 @@ public class GameScreen implements Screen {
         font = new BitmapFont();
         ////////////////////////////////////////////////////////////////////////////////
         tiledMapSiD = new TiledMapSiD(batch);
-        myPlayer = new Player(0, 0, 0);
-        myPlayer.setHeading(0);
-        myPlayer.setVelocity(100f);
-        secondPlayer = new Player(1,50,100);
-        secondPlayer.setHeading(0);
+
+        myPlayer = new Player(0, 1, 0, 0);
+        secondPlayer = new Player(1, 1, 50, 100);
+
+        players = new ArrayList<Player>();
+
+        players.add(myPlayer);
+        players.add(secondPlayer);
     }
 
     @Override
@@ -92,7 +97,11 @@ public class GameScreen implements Screen {
         batch.begin();
 
         // Mostramos los fps en la esquina izquierda-arriba de la ventana.
-        drawText(font, batch, "FPS:" + Integer.toString(Gdx.graphics.getFramesPerSecond()), -(viewPort.getWorldWidth() / 2) + 10, (viewPort.getWorldHeight() / 2) - 10, 1f, 1f, 1f, 1f);
+        drawText(font, batch, "FPS:" + Integer.toString(Gdx.graphics.getFramesPerSecond()), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 10f, 1f, 1f, 1f, 1f);
+
+        // Renderizamos modo debug. (Muestra posiciones).
+        renderDebug();
+
         myPlayer.render(batch);
         secondPlayer.render(batch);
         // Fin del batch.
@@ -136,11 +145,10 @@ public class GameScreen implements Screen {
     private void handleInput(float delta) {
 
         /* Multiplicamos la velocidad base y delta para que la velocidad no dependa de los frames. */
-        velocity = (myPlayer.getVelocity() * delta);
+        float velocity = (myPlayer.getVelocity() * delta);
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             myPlayer.setHeading(1);
-            myPlayer.translate(0,velocity);
-            camera.translate(0, velocity);
+            myPlayer.translate(0, velocity);
             myPlayer.updateStateTimer(delta);
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             myPlayer.setHeading(0);
@@ -163,5 +171,23 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             game.setScreen(new MainMenu(game));
         }
+    }
+
+
+    private void renderDebug() {
+        drawText(font, batch, "CamX:" + Float.toString(camera.position.x), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 30f, 1f, 1f, 1f, 1f);
+        drawText(font, batch, "CamY:" + Float.toString(camera.position.y), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 50f, 1f, 1f, 1f, 1f);
+
+
+        for (int a = 0; a < 2; a++) {
+            drawText(font, batch, "Player" + a + " posX:" + players.get(a).getPosition().getX(), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 70f - (40f * a), 1f, 1f, 1f, 1f);
+            drawText(font, batch, "Player" + a + " posY:" + players.get(a).getPosition().getY(), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 90f - (40f * a), 1f, 1f, 1f, 1f);
+        }
+
+        drawText(font, batch, "vpWorldWidth:" + Float.toString(viewPort.getWorldWidth()), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 150f, 1f, 1f, 1f, 1f);
+        drawText(font, batch, "vpWorldHeight:" + Float.toString(viewPort.getWorldHeight()), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 170f, 1f, 1f, 1f, 1f);
+        drawText(font, batch, "vpScreenWidth:" + Float.toString(viewPort.getScreenWidth()), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 190f, 1f, 1f, 1f, 1f);
+        drawText(font, batch, "vpScreenHeight:" + Float.toString(viewPort.getScreenHeight()), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 210f, 1f, 1f, 1f, 1f);
+
     }
 }

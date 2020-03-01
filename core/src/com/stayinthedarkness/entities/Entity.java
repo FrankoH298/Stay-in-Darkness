@@ -44,15 +44,14 @@ public abstract class Entity {
 
     public abstract static class Dynamic extends Entity {
         private Array<Animation> animations;
-        private int heading;
-        private float velocity;
-        private float stateTimer;
+        private int heading = 0;
+        private float velocity = 100f;
+        private float stateTimer = 0f;
         private TextureRegion texture;
 
-        public Dynamic(int id, float x, float y) {
+        public Dynamic(int id, int grhNumber, float x, float y) {
             super(id, x, y);
-            stateTimer = 0;
-            Texture texture = new Texture(Gdx.files.internal("graphics/1.png"));
+            Texture texture = new Texture(Gdx.files.internal("graphics/" + grhNumber + ".png"));
             animations = new Array<Animation>();
             Array<TextureRegion> frames = new Array<TextureRegion>();
             for (int a = 0; a < 4; a++) {
@@ -102,10 +101,8 @@ public abstract class Entity {
         }
 
         public void render(Batch batch) {
-            //TODO: Metodos para renderizar las animaciones.
+            // Dibuja la keyFrame en la posicion de la entidad.
             batch.draw(texture, super.getPosition().getX(), super.getPosition().getY());
-
-
         }
     }
 
@@ -118,6 +115,7 @@ public abstract class Entity {
         }
 
         public void render(Batch batch) {
+            // Dibuja la textura en la posicion de la entidad.
             batch.draw(texture, super.getPosition().getX(), super.getPosition().getY());
 
         }
