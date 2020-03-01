@@ -7,7 +7,7 @@ import com.stayinthedarkness.objects.Inventory;
 public class NPCNoHostil extends Entity.Dynamic {
     private Inventory sellInventory;
 
-    public NPCNoHostil(Batch batch,float x,float y) {
-        super(batch,x,y);
+    public NPCNoHostil(int id, float x, float y) {
+        super(id, x, y);
     }
 }

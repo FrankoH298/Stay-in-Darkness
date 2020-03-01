@@ -138,6 +138,7 @@ public class MainMenu implements Screen {
 
         // Limpiamos el stage.
         stage.dispose();
+
     }
 
 }

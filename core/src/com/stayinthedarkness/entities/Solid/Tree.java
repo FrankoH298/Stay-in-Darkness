@@ -6,12 +6,12 @@ import com.stayinthedarkness.entities.Entity;
 
 public class Tree extends Entity.Solid {
 
-    public Tree(Batch batch, float x, float y, Texture texture) {
-        super(batch, x, y, texture);
+    public Tree(int id, float x, float y, Texture texture) {
+        super(id, x, y, texture);
     }
 
     @Override
-    public void render() {
-        super.render();
+    public void render(Batch batch) {
+        super.render(batch);
     }
 }

@@ -7,14 +7,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stayinthedarkness.MainGame;
+import com.stayinthedarkness.entities.Dynamic.Player;
 import com.stayinthedarkness.entities.Solid.Tree;
 import com.stayinthedarkness.world.TiledMapSiD;
+import com.stayinthedarkness.world.WorldPosition;
 
 public class GameScreen implements Screen {
 
@@ -26,6 +30,9 @@ public class GameScreen implements Screen {
     private final BitmapFont font;
     private final TiledMapSiD tiledMapSiD;
     private float velocity;
+    private Player myPlayer;
+    private Player secondPlayer;
+
 
     public GameScreen(MainGame game) {
         this.game = game;
@@ -43,7 +50,11 @@ public class GameScreen implements Screen {
         font = new BitmapFont();
         ////////////////////////////////////////////////////////////////////////////////
         tiledMapSiD = new TiledMapSiD(batch);
-
+        myPlayer = new Player(0, 0, 0);
+        myPlayer.setHeading(0);
+        myPlayer.setVelocity(100f);
+        secondPlayer = new Player(1,50,100);
+        secondPlayer.setHeading(0);
     }
 
     @Override
@@ -55,8 +66,12 @@ public class GameScreen implements Screen {
         handleInput(delta);
         // Actualiza la camara.
         camera.update();
+        camera.position.set(myPlayer.getPosition().getX(), myPlayer.getPosition().getY(), 0);
         // Le seteamos la camara al renderizado del mapa.
         tiledMapSiD.getRendererMap().setView(camera);
+
+        myPlayer.update(delta);
+        secondPlayer.update(delta);
     }
 
     @Override
@@ -78,7 +93,8 @@ public class GameScreen implements Screen {
 
         // Mostramos los fps en la esquina izquierda-arriba de la ventana.
         drawText(font, batch, "FPS:" + Integer.toString(Gdx.graphics.getFramesPerSecond()), -(viewPort.getWorldWidth() / 2) + 10, (viewPort.getWorldHeight() / 2) - 10, 1f, 1f, 1f, 1f);
-
+        myPlayer.render(batch);
+        secondPlayer.render(batch);
         // Fin del batch.
         batch.end();
     }
@@ -120,15 +136,28 @@ public class GameScreen implements Screen {
     private void handleInput(float delta) {
 
         /* Multiplicamos la velocidad base y delta para que la velocidad no dependa de los frames. */
-        velocity = (100f * delta);
+        velocity = (myPlayer.getVelocity() * delta);
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            myPlayer.setHeading(1);
+            myPlayer.translate(0,velocity);
             camera.translate(0, velocity);
+            myPlayer.updateStateTimer(delta);
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            camera.translate(0, -velocity);
+            myPlayer.setHeading(0);
+            myPlayer.translate(0, -velocity);
+            myPlayer.updateStateTimer(delta);
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            camera.translate(velocity, 0);
+            myPlayer.setHeading(3);
+            myPlayer.translate(velocity, 0);
+            myPlayer.updateStateTimer(delta);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            camera.translate(-velocity, 0);
+            myPlayer.setHeading(2);
+            myPlayer.translate(-velocity, 0);
+            myPlayer.updateStateTimer(delta);
+        } else {
+            if (myPlayer.getStateTimer() != 0) {
+                myPlayer.setStateTimer(0);
+            }
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
