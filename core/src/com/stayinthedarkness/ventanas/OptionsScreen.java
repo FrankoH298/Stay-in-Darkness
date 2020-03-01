@@ -57,16 +57,13 @@ public class OptionsScreen implements Screen {
 
         // Cargamos los archivos de traduccion.
         bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
-        
+
         // Inicializamos los widgets, seteamos los listeners y aplicamos parametros
         widgetsInit();
         widgetsListeners();
         widgetsParameters();
-        
-        
-        
-       
-        
+
+
     }
 
     @Override
@@ -82,7 +79,7 @@ public class OptionsScreen implements Screen {
 
         // Inicio del batch, a partir de aca van todos los .draw().
         game.getSpriteBatch().begin();
-        
+
 
         // Actualizamos el stage mandandole delta y dibujamos el stage.
         stage.act(delta);
@@ -129,7 +126,7 @@ public class OptionsScreen implements Screen {
         labelSettings = new Label(bundle.get("MainMenu.labelSettings"), skin);
         soundSlider = new Slider(0, 100, 1, false, skin);
         soundLabel = new Label(bundle.get("MainMenu.soundLabel"), skin);
-        
+
     }
 
     private void widgetsListeners() {
@@ -145,24 +142,22 @@ public class OptionsScreen implements Screen {
         fullscreenCheckBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                
-                if(fullscreenCheckBox.isChecked()){
+
+                if (fullscreenCheckBox.isChecked()) {
                     Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-                }else{
+                } else {
                     Gdx.graphics.setWindowedMode(800, 600);
                 }
                 // Creamos un nuevo viewport con el nuevo tamaño de la ventana.
                 reloadViewport();
             }
         });
-        
 
 
-       
     }
-    
-    private void widgetsParameters(){
-        table.add(labelSettings).colspan(4).expand(Gdx.graphics.getWidth(),1);
+
+    private void widgetsParameters() {
+        table.add(labelSettings).colspan(4).expand(Gdx.graphics.getWidth(), 1);
         table.row(); // Inserta una fila
         table.add(fullscreenLabel).expand().right();
         table.add(fullscreenCheckBox).expand().colspan(3).size(100);
@@ -176,9 +171,10 @@ public class OptionsScreen implements Screen {
         table.add(soundSlider).expand().colspan(3);
         table.row();
         table.add(BackButton).expand().left().bottom().width(100).height(50);
-        
+
     }
-    private void reloadViewport(){
-        stage.setViewport(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
+
+    private void reloadViewport() {
+        stage.setViewport(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     }
 }

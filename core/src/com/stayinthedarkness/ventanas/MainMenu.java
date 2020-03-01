@@ -26,7 +26,7 @@ public class MainMenu implements Screen {
     private Label labelName;
     private TextField fieldName;
     private final I18NBundle bundle;
-    
+
 
     public MainMenu(final MainGame game) {
         this.game = game;
@@ -50,7 +50,7 @@ public class MainMenu implements Screen {
 
         // Cargamos los archivos de traduccion.
         bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
-        
+
         // Inicializamos los widgets, seteamos los listeners y aplicamos parametros
         widgetsInit();
         widgetsListeners();
@@ -110,7 +110,10 @@ public class MainMenu implements Screen {
         optionsButton = new TextButton(bundle.get("MainMenu.optionButton"), skin);
         exitButton = new TextButton(bundle.get("MainMenu.exitButton"), skin);
         labelName = new Label("Stay In Darkness", skin);
-        fieldName = new TextField(bundle.get("MainMenu.fieldName"), skin);
+        fieldName = new TextField("", skin);
+
+        // Setea un mensaje de fondo que es borrado al clickear el fieldName.
+        fieldName.setMessageText(bundle.get("MainMenu.fieldName"));
     }
 
     private void widgetsListeners() {
@@ -140,8 +143,8 @@ public class MainMenu implements Screen {
         });
 
     }
-    
-    private void widgetsParameters(){
+
+    private void widgetsParameters() {
         table.add(labelName).expand(0, 100).prefWidth(100).prefHeight(50);
         table.row(); // Inserta una fila
         table.add(fieldName).expandY().bottom().prefWidth(100).prefHeight(50);
@@ -151,7 +154,7 @@ public class MainMenu implements Screen {
         table.add(optionsButton).expandY().top().prefWidth(100).prefHeight(50);
         table.row();
         table.add(exitButton).expand().bottom().right().prefWidth(100).prefHeight(50);
-        
+
     }
 
 }
