@@ -8,7 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stayinthedarkness.MainGame;
 import com.stayinthedarkness.entities.Solid.Tree;
 import com.stayinthedarkness.world.TiledMapSiD;
@@ -19,7 +22,7 @@ public class GameScreen implements Screen {
     private final MainGame game;
     private final SpriteBatch batch;
     private final OrthographicCamera camera;
-    private final FitViewport viewPort;
+    private final Viewport viewPort;
     private final BitmapFont font;
     private final TiledMapSiD tiledMapSiD;
     private float velocity;
@@ -33,7 +36,7 @@ public class GameScreen implements Screen {
         this.camera = new OrthographicCamera();
 
         // FitViewport sirve para que al redimensionar el tamaño de la ventana se mantenga la escala.
-        viewPort = new FitViewport(MainGame.V_WIDTH, MainGame.V_HEIGHT, camera);
+        viewPort = new ScalingViewport(Scaling.none, MainGame.V_WIDTH, MainGame.V_HEIGHT, camera);
         viewPort.apply();
 
         // Seteamos la posicion de la camara en la mitad de la ventana.
@@ -42,7 +45,6 @@ public class GameScreen implements Screen {
         ////////////////////////////////////////////////////////////////////////////////
         tiledMapSiD = new TiledMapSiD(batch);
 
-        tree1 = new Tree(batch, 0, 0, new Texture(Gdx.files.internal("graphics/tree.png")));
     }
 
     @Override
