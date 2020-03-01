@@ -1,4 +1,4 @@
-package com.stayinthedarkness.objects;
+package server.clients;
 
 public class Item {
     public int id;

@@ -3,7 +3,6 @@ package server.network;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import server.serverLauncher;
 
 public class ServerNetworkListener extends Listener {
     private Server SiDServer;
@@ -31,7 +30,6 @@ public class ServerNetworkListener extends Listener {
         if (o instanceof Packets.Packet00Message) {
             Packets.Packet00Message p = (Packets.Packet00Message) o;
             System.out.println("[CLIENT]: " + p.message);
-
         }
     }
 }

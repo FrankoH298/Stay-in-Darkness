@@ -1,4 +1,4 @@
-package com.stayinthedarkness.world;
+package server.clients;
 
 public class WorldPosition {
     public float x;
