@@ -83,7 +83,7 @@ public class GameScreen implements Screen {
         handleInput(delta);
 
         // Actualiza la camara.
-        camera.position.set(myPlayer.getPosition().getX() + myPlayer.getCenterPositionW(delta), myPlayer.getPosition().getY() + myPlayer.getCenterPositionH(delta), 0);
+        camera.position.set(myPlayer.getPosition().x + myPlayer.getCenterPositionW(delta), myPlayer.getPosition().y + myPlayer.getCenterPositionH(delta), 0);
         camera.update();
 
         // Le seteamos la camara al renderizado del mapa.
@@ -194,12 +194,6 @@ public class GameScreen implements Screen {
     private void renderDebug() {
         drawText(font, batch, "CamX:" + Float.toString(camera.position.x), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 30f, 1f, 1f, 1f, 1f);
         drawText(font, batch, "CamY:" + Float.toString(camera.position.y), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 50f, 1f, 1f, 1f, 1f);
-
-
-        for (int a = 0; a < 2; a++) {
-            drawText(font, batch, "Player" + a + " posX:" + players.get(a).getPosition().getX(), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 70f - (40f * a), 1f, 1f, 1f, 1f);
-            drawText(font, batch, "Player" + a + " posY:" + players.get(a).getPosition().getY(), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 90f - (40f * a), 1f, 1f, 1f, 1f);
-        }
 
         drawText(font, batch, "vpWorldWidth:" + Float.toString(viewPort.getWorldWidth()), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 150f, 1f, 1f, 1f, 1f);
         drawText(font, batch, "vpWorldHeight:" + Float.toString(viewPort.getWorldHeight()), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 170f, 1f, 1f, 1f, 1f);

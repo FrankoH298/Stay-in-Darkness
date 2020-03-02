@@ -17,7 +17,7 @@ public abstract class Entity {
 
     public Entity(int id, float x, float y) {
         this.id = id;
-        this.position = new WorldPosition(x, y);
+        this.position = new WorldPosition();
     }
 
     public int getId() {
@@ -37,8 +37,8 @@ public abstract class Entity {
     }
 
     public void translate(float x, float y) {
-        position.setX(position.getX() + x);
-        position.setY(position.getY() + y);
+        position.x += x;
+        position.y += y;
     }
 
 
@@ -102,7 +102,7 @@ public abstract class Entity {
 
         public void render(Batch batch) {
             // Dibuja la keyFrame en la posicion de la entidad.
-            batch.draw(texture, super.getPosition().getX(), super.getPosition().getY());
+            batch.draw(texture, super.getPosition().x, super.getPosition().y);
         }
     }
 
@@ -116,7 +116,7 @@ public abstract class Entity {
 
         public void render(Batch batch) {
             // Dibuja la textura en la posicion de la entidad.
-            batch.draw(texture, super.getPosition().getX(), super.getPosition().getY());
+            batch.draw(texture, super.getPosition().x, super.getPosition().y);
 
         }
 
