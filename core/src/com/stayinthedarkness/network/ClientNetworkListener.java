@@ -33,5 +33,13 @@ public class ClientNetworkListener extends Listener {
             Packets.Packet01AddPlayer p = (Packets.Packet01AddPlayer) o;
             game.menu.gameScreen.addPlayer(p.id, p.x, p.y);
         }
+        if (o instanceof Packets.Packet02RemovePlayer) {
+            Packets.Packet02RemovePlayer p = (Packets.Packet02RemovePlayer) o;
+            game.menu.gameScreen.removePlayer(p.id);
+        }
+        if (o instanceof Packets.Packet03UpdatePlayer) {
+            Packets.Packet03UpdatePlayer p = (Packets.Packet03UpdatePlayer) o;
+            game.menu.gameScreen.updatePlayer(p.id, p.x, p.y, p.heading);
+        }
     }
 }

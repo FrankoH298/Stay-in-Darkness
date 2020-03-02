@@ -39,6 +39,8 @@ public class serverLauncher {
         Kryo kryo = server.getKryo();
         kryo.register(Packets.Packet00Message.class);
         kryo.register(Packets.Packet01AddPlayer.class);
+        kryo.register(Packets.Packet02RemovePlayer.class);
+        kryo.register(Packets.Packet03UpdatePlayer.class);
     }
 
     public static void main(String[] arg) {

@@ -17,7 +17,7 @@ public abstract class Entity {
 
     public Entity(int id, float x, float y) {
         this.id = id;
-        this.position = new WorldPosition();
+        this.position = new WorldPosition(x,y);
     }
 
     public int getId() {
@@ -49,6 +49,8 @@ public abstract class Entity {
         private float stateTimer = 0f;
         private TextureRegion texture;
         public Array<Animation> animations;
+        public float lastX;
+        public float lastY;
 
         public Dynamic(int id, float x, float y, Array<Animation> animations) {
             super(id, x, y);

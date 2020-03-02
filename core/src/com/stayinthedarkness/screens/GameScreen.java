@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stayinthedarkness.MainGame;
 import com.stayinthedarkness.entities.Dynamic.Player;
 import com.stayinthedarkness.entities.Solid.Tree;
+import com.stayinthedarkness.network.Packets;
 import com.stayinthedarkness.network.SiDClient;
 import com.stayinthedarkness.world.TiledMapSiD;
 import com.stayinthedarkness.world.WorldPosition;
@@ -171,18 +172,22 @@ public class GameScreen implements Screen {
                 players.get(0).setHeading(1);
                 players.get(0).translate(0, velocity);
                 players.get(0).updateStateTimer(delta);
+                movePlayer(players.get(0));
             } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                 players.get(0).setHeading(0);
                 players.get(0).translate(0, -velocity);
                 players.get(0).updateStateTimer(delta);
+                movePlayer(players.get(0));
             } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 players.get(0).setHeading(3);
                 players.get(0).translate(velocity, 0);
                 players.get(0).updateStateTimer(delta);
+                movePlayer(players.get(0));
             } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 players.get(0).setHeading(2);
                 players.get(0).translate(-velocity, 0);
                 players.get(0).updateStateTimer(delta);
+                movePlayer(players.get(0));
             } else {
                 if (players.get(0).getStateTimer() != 0) {
                     players.get(0).setStateTimer(0);
@@ -190,6 +195,7 @@ public class GameScreen implements Screen {
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+                client.client.close();
                 game.setScreen(new MainMenu(game));
             }
         }
@@ -249,6 +255,32 @@ public class GameScreen implements Screen {
         if (client.client.getID() == id) {
             isPlayable = true;
         }
+    }
+
+    public void removePlayer(int id) {
+        for (int a = 0; a < players.size(); a++) {
+            if (players.get(a).getId() == id) {
+                players.remove(a);
+            }
+        }
+    }
+
+    public void updatePlayer(int id, float x, float y, int heading) {
+        for (int a = 0; a < players.size(); a++) {
+            if (players.get(a).getId() == id) {
+                players.get(a).setHeading(heading);
+                players.get(a).setPosition(new WorldPosition(x,y));
+            }
+        }
+    }
+
+    public void movePlayer(Player player) {
+        Packets.Packet03UpdatePlayer p = new Packets.Packet03UpdatePlayer();
+        p.heading = players.get(0).getHeading();
+        p.x = players.get(0).getPosition().x;
+        p.y = players.get(0).getPosition().y;
+        p.id = players.get(0).getId();
+        client.client.sendTCP(p);
 
     }
 }
