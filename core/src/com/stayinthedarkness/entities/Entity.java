@@ -51,6 +51,7 @@ public abstract class Entity {
         public Array<Animation> animations;
         public float lastX;
         public float lastY;
+        private long lastTime = System.currentTimeMillis();
 
         public Dynamic(int id, float x, float y, Array<Animation> animations) {
             super(id, x, y);
@@ -78,12 +79,16 @@ public abstract class Entity {
                 updateStateTimer(delta);
                 lastX = getPosition().x;
                 lastY = getPosition().y;
-            }else{
+                lastTime = System.currentTimeMillis();
+            } else {
+
                 if (getStateTimer() != 0) {
-                    setStateTimer(0);
+                    if (System.currentTimeMillis() - lastTime > 100) {
+                        setStateTimer(0);
+                        lastTime = System.currentTimeMillis();
+                    }
                 }
             }
-
         }
 
         public float getStateTimer() {
