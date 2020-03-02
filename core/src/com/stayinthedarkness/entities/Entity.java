@@ -43,24 +43,15 @@ public abstract class Entity {
 
 
     public abstract static class Dynamic extends Entity {
-        private Array<Animation> animations;
+
         private int heading = 0;
         private float velocity = 100f;
         private float stateTimer = 0f;
         private TextureRegion texture;
+        public Array<Animation> animations;
 
-        public Dynamic(int id, int grhNumber, float x, float y) {
+        public Dynamic(int id, float x, float y) {
             super(id, x, y);
-            Texture texture = new Texture(Gdx.files.internal("graphics/" + grhNumber + ".png"));
-            animations = new Array<Animation>();
-            Array<TextureRegion> frames = new Array<TextureRegion>();
-            for (int a = 0; a < 4; a++) {
-                for (int b = 0; b < 6; b++) {
-                    frames.add(new TextureRegion(texture, 27 * b, 47 * a, 27, 47));
-                }
-                animations.add(new Animation(0.1f, frames));
-                frames.clear();
-            }
 
         }
 

@@ -10,8 +10,8 @@ public class NPCHostil extends Entity.Dynamic {
     private Item drop;
     private Gold goldDrop;
 
-    public NPCHostil(int id, int grhNumber, float x, float y) {
-        super(id,grhNumber, x, y);
+    public NPCHostil(int id, float x, float y) {
+        super(id, x, y);
     }
 
 }

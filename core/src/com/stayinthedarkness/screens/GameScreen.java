@@ -35,6 +35,7 @@ public class GameScreen implements Screen {
     private Player secondPlayer;
     private ArrayList<Player> players;
     private Array<String> console;
+    public Array<Array<Animation>> animations;
 
 
     public GameScreen(MainGame game) {
@@ -45,6 +46,9 @@ public class GameScreen implements Screen {
         // Conectamos con el servidor.
         SiDClient client = new SiDClient(game);
 
+        animations = new Array<Array<Animation>>();
+        animations.add(loadAnimation(1));
+        
         // Creamos una camara.
         this.camera = new OrthographicCamera();
 
@@ -65,13 +69,14 @@ public class GameScreen implements Screen {
         // Inicializamos la consola con un tamaño de 4.
         initConsole(4);
 
-        myPlayer = new Player(0, 1, 0, 0);
-        secondPlayer = new Player(1, 1, 50, 100);
+        myPlayer = new Player(0, 0, 0,animations.get(0));
+        secondPlayer = new Player(1, 0, 0,animations.get(0));
 
         players = new ArrayList<Player>();
 
         players.add(myPlayer);
         players.add(secondPlayer);
+
     }
 
     @Override
@@ -222,4 +227,20 @@ public class GameScreen implements Screen {
             drawText(font, batch, console.get(a), (-(viewPort.getWorldWidth() / 2) + 10f), (-(viewPort.getWorldHeight() / 2) + 30f + (20f * a)), 1f, 1f, 1f, 1f - (0.2f * a));
         }
     }
+
+    private Array<Animation> loadAnimation(int grhNumber) {
+        Array<Animation> animations;
+        Texture texture = new Texture(Gdx.files.internal("graphics/" + grhNumber + ".png"));
+        animations = new Array<Animation>();
+        Array<TextureRegion> frames = new Array<TextureRegion>();
+        for (int a = 0; a < 4; a++) {
+            for (int b = 0; b < 6; b++) {
+                frames.add(new TextureRegion(texture, 27 * b, 47 * a, 27, 47));
+            }
+            animations.add(new Animation(0.1f, frames));
+            frames.clear();
+        }
+        return animations;
+    }
 }
+
