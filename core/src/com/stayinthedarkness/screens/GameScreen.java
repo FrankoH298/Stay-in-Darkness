@@ -171,27 +171,23 @@ public class GameScreen implements Screen {
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                 players.get(0).setHeading(1);
                 players.get(0).translate(0, velocity);
-                players.get(0).updateStateTimer(delta);
+                //players.get(0).updateStateTimer(delta);
                 movePlayer(players.get(0));
             } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                 players.get(0).setHeading(0);
                 players.get(0).translate(0, -velocity);
-                players.get(0).updateStateTimer(delta);
+                //players.get(0).updateStateTimer(delta);
                 movePlayer(players.get(0));
             } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 players.get(0).setHeading(3);
                 players.get(0).translate(velocity, 0);
-                players.get(0).updateStateTimer(delta);
+                //players.get(0).updateStateTimer(delta);
                 movePlayer(players.get(0));
             } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 players.get(0).setHeading(2);
                 players.get(0).translate(-velocity, 0);
-                players.get(0).updateStateTimer(delta);
+                //players.get(0).updateStateTimer(delta);
                 movePlayer(players.get(0));
-            } else {
-                if (players.get(0).getStateTimer() != 0) {
-                    players.get(0).setStateTimer(0);
-                }
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -243,14 +239,15 @@ public class GameScreen implements Screen {
             for (int b = 0; b < 6; b++) {
                 frames.add(new TextureRegion(texture, 27 * b, 47 * a, 27, 47));
             }
-            animations.add(new Animation(0.1f, frames));
+            animations.add(new Animation(0.15f, frames));
             frames.clear();
         }
         return animations;
     }
 
-    public void addPlayer(int id, float x, float y) {
+    public void addPlayer(int id, float x, float y, int heading) {
         Player player = new Player(id, x, y, animations.get(0));
+        player.setHeading(heading);
         players.add(player);
         if (client.client.getID() == id) {
             isPlayable = true;
@@ -269,7 +266,7 @@ public class GameScreen implements Screen {
         for (int a = 0; a < players.size(); a++) {
             if (players.get(a).getId() == id) {
                 players.get(a).setHeading(heading);
-                players.get(a).setPosition(new WorldPosition(x,y));
+                players.get(a).setPosition(new WorldPosition(x, y));
             }
         }
     }
@@ -280,7 +277,7 @@ public class GameScreen implements Screen {
         p.x = players.get(0).getPosition().x;
         p.y = players.get(0).getPosition().y;
         p.id = players.get(0).getId();
-        client.client.sendTCP(p);
+        client.client.sendUDP(p);
 
     }
 }

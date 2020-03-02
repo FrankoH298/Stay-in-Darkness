@@ -25,12 +25,14 @@ public class ServerNetworkListener extends Listener {
         player.id = c.getID();
         player.x = 0;
         player.y = 0;
+        player.heading = 0;
         SiDServer.sendToAllTCP(player);
         for (int a = 0; a < players.size(); a++) {
             Packets.Packet01AddPlayer playerNew = new Packets.Packet01AddPlayer();
             playerNew.id = players.get(a).id;
             playerNew.x = players.get(a).x;
             playerNew.y = players.get(a).y;
+            playerNew.heading = players.get(a).heading;
             SiDServer.sendToTCP(c.getID(), playerNew);
         }
         players.add(new Player(player.id, player.x, player.y, 0));
@@ -66,7 +68,7 @@ public class ServerNetworkListener extends Listener {
                     players.get(a).y = p.y;
                 }
             }
-            SiDServer.sendToAllExceptTCP(c.getID(),p);
+            SiDServer.sendToAllExceptUDP(c.getID(),p);
         }
     }
 }

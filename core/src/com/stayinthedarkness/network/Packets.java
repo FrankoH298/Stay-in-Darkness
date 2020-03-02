@@ -12,6 +12,7 @@ public class Packets {
         public int id;
         public float x;
         public float y;
+        public int heading;
     }
 
     public static class Packet02RemovePlayer {

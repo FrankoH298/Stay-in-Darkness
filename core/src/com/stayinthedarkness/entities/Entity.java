@@ -17,7 +17,7 @@ public abstract class Entity {
 
     public Entity(int id, float x, float y) {
         this.id = id;
-        this.position = new WorldPosition(x,y);
+        this.position = new WorldPosition(x, y);
     }
 
     public int getId() {
@@ -56,6 +56,16 @@ public abstract class Entity {
             super(id, x, y);
             this.animations = animations;
             texture = getFrame(0);
+            lastX = x;
+            lastY = y;
+        }
+
+        @Override
+        public void translate(float x, float y) {
+            lastX = super.getPosition().x;
+            lastY = super.getPosition().y;
+            super.getPosition().x += x;
+            super.getPosition().y += y;
         }
 
         public TextureRegion getFrame(float delta) {
@@ -64,6 +74,16 @@ public abstract class Entity {
 
         public void update(float delta) {
             texture = getFrame(delta);
+            if (lastX != getPosition().x || lastY != getPosition().y) {
+                updateStateTimer(delta);
+                lastX = getPosition().x;
+                lastY = getPosition().y;
+            }else{
+                if (getStateTimer() != 0) {
+                    setStateTimer(0);
+                }
+            }
+
         }
 
         public float getStateTimer() {
