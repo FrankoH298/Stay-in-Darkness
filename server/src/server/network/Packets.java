@@ -6,5 +6,10 @@ public class Packets {
         public String message;
     }
 
+    public static class Packet01AddPlayer {
+        public int id;
+        public float x;
+        public float y;
+    }
 
 }

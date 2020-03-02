@@ -21,7 +21,7 @@ public class SiDClient {
     private String IPAdress = "localhost";
 
     // Kryonet Client
-    private Client client;
+    public Client client;
     private ClientNetworkListener clientListener;
 
     public SiDClient(MainGame game) {
@@ -48,5 +48,6 @@ public class SiDClient {
     private void registerPackets() {
         Kryo kryo = client.getKryo();
         kryo.register(Packets.Packet00Message.class);
+        kryo.register(Packets.Packet01AddPlayer.class);
     }
 }

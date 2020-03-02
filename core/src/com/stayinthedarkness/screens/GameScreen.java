@@ -31,24 +31,20 @@ public class GameScreen implements Screen {
     private final Viewport viewPort;
     private final BitmapFont font;
     private final TiledMapSiD tiledMapSiD;
-    private Player myPlayer;
-    private Player secondPlayer;
     private ArrayList<Player> players;
     private Array<String> console;
     public Array<Array<Animation>> animations;
-
+    private boolean isPlayable = false;
+    SiDClient client;
 
     public GameScreen(MainGame game) {
 
         this.game = game;
         this.batch = game.getSpriteBatch();
 
-        // Conectamos con el servidor.
-        SiDClient client = new SiDClient(game);
-
         animations = new Array<Array<Animation>>();
         animations.add(loadAnimation(1));
-        
+
         // Creamos una camara.
         this.camera = new OrthographicCamera();
 
@@ -69,13 +65,10 @@ public class GameScreen implements Screen {
         // Inicializamos la consola con un tamaño de 4.
         initConsole(4);
 
-        myPlayer = new Player(0, 0, 0,animations.get(0));
-        secondPlayer = new Player(1, 0, 0,animations.get(0));
-
         players = new ArrayList<Player>();
 
-        players.add(myPlayer);
-        players.add(secondPlayer);
+        // Conectamos con el servidor.
+        client = new SiDClient(game);
 
     }
 
@@ -88,14 +81,17 @@ public class GameScreen implements Screen {
         handleInput(delta);
 
         // Actualiza la camara.
-        camera.position.set(myPlayer.getPosition().x + myPlayer.getCenterPositionW(delta), myPlayer.getPosition().y + myPlayer.getCenterPositionH(delta), 0);
+        if (isPlayable) {
+            camera.position.set(players.get(0).getPosition().x + players.get(0).getCenterPositionW(delta), players.get(0).getPosition().y + players.get(0).getCenterPositionH(delta), 0);
+        }
         camera.update();
 
         // Le seteamos la camara al renderizado del mapa.
         tiledMapSiD.getRendererMap().setView(camera);
 
-        myPlayer.update(delta);
-        secondPlayer.update(delta);
+        for (int a = 0; a < players.size(); a++) {
+            players.get(a).update(delta);
+        }
     }
 
     @Override
@@ -124,8 +120,10 @@ public class GameScreen implements Screen {
         // Renderizamos modo debug. (Muestra posiciones).
         renderDebug();
 
-        myPlayer.render(batch);
-        secondPlayer.render(batch);
+        for (int a = 0; a < players.size(); a++) {
+            players.get(a).render(batch);
+        }
+
         // Fin del batch.
         batch.end();
     }
@@ -167,31 +165,33 @@ public class GameScreen implements Screen {
     private void handleInput(float delta) {
 
         /* Multiplicamos la velocidad base y delta para que la velocidad no dependa de los frames. */
-        float velocity = (myPlayer.getVelocity() * delta);
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            myPlayer.setHeading(1);
-            myPlayer.translate(0, velocity);
-            myPlayer.updateStateTimer(delta);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            myPlayer.setHeading(0);
-            myPlayer.translate(0, -velocity);
-            myPlayer.updateStateTimer(delta);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            myPlayer.setHeading(3);
-            myPlayer.translate(velocity, 0);
-            myPlayer.updateStateTimer(delta);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            myPlayer.setHeading(2);
-            myPlayer.translate(-velocity, 0);
-            myPlayer.updateStateTimer(delta);
-        } else {
-            if (myPlayer.getStateTimer() != 0) {
-                myPlayer.setStateTimer(0);
+        if (isPlayable) {
+            float velocity = (players.get(0).getVelocity() * delta);
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                players.get(0).setHeading(1);
+                players.get(0).translate(0, velocity);
+                players.get(0).updateStateTimer(delta);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                players.get(0).setHeading(0);
+                players.get(0).translate(0, -velocity);
+                players.get(0).updateStateTimer(delta);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                players.get(0).setHeading(3);
+                players.get(0).translate(velocity, 0);
+                players.get(0).updateStateTimer(delta);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                players.get(0).setHeading(2);
+                players.get(0).translate(-velocity, 0);
+                players.get(0).updateStateTimer(delta);
+            } else {
+                if (players.get(0).getStateTimer() != 0) {
+                    players.get(0).setStateTimer(0);
+                }
             }
-        }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(new MainMenu(game));
+            if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+                game.setScreen(new MainMenu(game));
+            }
         }
     }
 
@@ -241,6 +241,15 @@ public class GameScreen implements Screen {
             frames.clear();
         }
         return animations;
+    }
+
+    public void addPlayer(int id, float x, float y) {
+        Player player = new Player(id, x, y, animations.get(0));
+        players.add(player);
+        if (client.client.getID() == id) {
+            isPlayable = true;
+        }
+
     }
 }
 

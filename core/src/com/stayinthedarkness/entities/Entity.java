@@ -50,9 +50,10 @@ public abstract class Entity {
         private TextureRegion texture;
         public Array<Animation> animations;
 
-        public Dynamic(int id, float x, float y) {
+        public Dynamic(int id, float x, float y, Array<Animation> animations) {
             super(id, x, y);
-
+            this.animations = animations;
+            texture = getFrame(0);
         }
 
         public TextureRegion getFrame(float delta) {

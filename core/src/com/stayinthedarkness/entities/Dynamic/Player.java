@@ -19,8 +19,7 @@ public class Player extends Entity.Dynamic {
 
 
     public Player(int id, float x, float y, Array<Animation> animations) {
-        super(id, x, y);
-        this.animations = animations;
+        super(id, x, y,animations);
     }
 
     public float getCenterPositionW(float delta) {

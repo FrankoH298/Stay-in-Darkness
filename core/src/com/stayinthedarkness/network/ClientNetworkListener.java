@@ -29,5 +29,9 @@ public class ClientNetworkListener extends Listener {
             System.out.println("[SERVER]: " + p.message);
             game.menu.gameScreen.consoleTextAdd("[SERVER]: " + p.message);
         }
+        if (o instanceof Packets.Packet01AddPlayer) {
+            Packets.Packet01AddPlayer p = (Packets.Packet01AddPlayer) o;
+            game.menu.gameScreen.addPlayer(p.id, p.x, p.y);
+        }
     }
 }

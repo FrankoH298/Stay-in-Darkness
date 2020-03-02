@@ -16,6 +16,11 @@ public class ServerNetworkListener extends Listener {
         Packets.Packet00Message p = new Packets.Packet00Message();
         p.message = "ID:" + c.getID() + " se conectó";
         SiDServer.sendToAllExceptTCP(c.getID(), p);
+        Packets.Packet01AddPlayer player = new Packets.Packet01AddPlayer();
+        player.id = c.getID();
+        player.x = 0;
+        player.y = 0;
+        SiDServer.sendToAllTCP(player);
     }
 
     @Override
