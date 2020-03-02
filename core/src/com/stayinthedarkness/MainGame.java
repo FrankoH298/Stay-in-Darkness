@@ -8,8 +8,8 @@ import com.stayinthedarkness.ventanas.MainMenu;
 public class MainGame extends Game {
 
     // Virtual Screen size.
-    public static final int V_WIDTH = 800;
-    public static final int V_HEIGHT = 600;
+    public static final int V_WIDTH = 1920;
+    public static final int V_HEIGHT = 1080;
     private SpriteBatch batch;
 
     @Override
