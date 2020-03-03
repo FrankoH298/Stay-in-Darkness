@@ -17,6 +17,5 @@ public class DesktopLauncher {
         config.title = "Stay in Darkness";
         config.resizable = false;
         new LwjglApplication(new MainGame(), config);
-
     }
 }

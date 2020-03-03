@@ -27,7 +27,7 @@ public class ClientNetworkListener extends Listener {
         if (o instanceof Packets.Packet00Message) {
             Packets.Packet00Message p = (Packets.Packet00Message) o;
             System.out.println("[SERVER]: " + p.message);
-            game.menu.gameScreen.consoleTextAdd("[SERVER]: " + p.message);
+            game.menu.gameScreen.getConsole().consoleTextAdd("[SERVER]: " + p.message);
         }
         if (o instanceof Packets.Packet01AddPlayer) {
             Packets.Packet01AddPlayer p = (Packets.Packet01AddPlayer) o;

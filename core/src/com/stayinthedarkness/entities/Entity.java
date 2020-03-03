@@ -83,7 +83,7 @@ public abstract class Entity {
             } else {
 
                 if (getStateTimer() != 0) {
-                    if (System.currentTimeMillis() - lastTime > 100) {
+                    if (System.currentTimeMillis() - lastTime > 50) {
                         setStateTimer(0);
                         lastTime = System.currentTimeMillis();
                     }

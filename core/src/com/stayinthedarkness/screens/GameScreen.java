@@ -18,6 +18,7 @@ import com.stayinthedarkness.entities.Dynamic.Player;
 import com.stayinthedarkness.entities.Solid.Tree;
 import com.stayinthedarkness.network.Packets;
 import com.stayinthedarkness.network.SiDClient;
+import com.stayinthedarkness.objects.Console;
 import com.stayinthedarkness.world.TiledMapSiD;
 import com.stayinthedarkness.world.WorldPosition;
 
@@ -33,7 +34,7 @@ public class GameScreen implements Screen {
     private final BitmapFont font;
     private final TiledMapSiD tiledMapSiD;
     private ArrayList<Player> players;
-    private Array<String> console;
+    private final Console console;
     public Array<Array<Animation>> animations;
     private boolean isPlayable = false;
     SiDClient client;
@@ -64,7 +65,7 @@ public class GameScreen implements Screen {
         tiledMapSiD = new TiledMapSiD(batch);
 
         // Inicializamos la consola con un tamaño de 4.
-        initConsole(4);
+        console = new Console(this,4);
 
         players = new ArrayList<Player>();
 
@@ -116,7 +117,7 @@ public class GameScreen implements Screen {
         drawText(font, batch, "FPS:" + Integer.toString(Gdx.graphics.getFramesPerSecond()), -(viewPort.getWorldWidth() / 2) + 10f, (viewPort.getWorldHeight() / 2) - 10f, 1f, 1f, 1f, 1f);
 
         // Renderizamos la consola.
-        renderConsole(batch);
+        console.renderConsole(batch);
 
         // Renderizamos modo debug. (Muestra posiciones).
         renderDebug();
@@ -154,7 +155,7 @@ public class GameScreen implements Screen {
         tiledMapSiD.dispose();
     }
 
-    private void drawText(BitmapFont font, SpriteBatch batch, String text, float x, float y, float r, float g, float b, float a) {
+    public void drawText(BitmapFont font, SpriteBatch batch, String text, float x, float y, float r, float g, float b, float a) {
 
         // Seteamos el color del texto a dibujar
         font.setColor(r, g, b, a);
@@ -209,27 +210,6 @@ public class GameScreen implements Screen {
 
     }
 
-    private void initConsole(int size) {
-        console = new Array<String>();
-        for (int a = 0; a < size; a++) {
-            console.add("");
-        }
-    }
-
-    public void consoleTextAdd(String msg) {
-        System.out.println("a");
-        for (int a = console.size - 1; a > 0; a--) {
-            console.set(a, console.get(a - 1));
-        }
-        console.set(0, msg);
-    }
-
-    private void renderConsole(SpriteBatch batch) {
-        for (int a = 0; a < console.size; a++) {
-            drawText(font, batch, console.get(a), (-(viewPort.getWorldWidth() / 2) + 10f), (-(viewPort.getWorldHeight() / 2) + 30f + (20f * a)), 1f, 1f, 1f, 1f - (0.2f * a));
-        }
-    }
-
     private Array<Animation> loadAnimation(int grhNumber) {
         Array<Animation> animations;
         Texture texture = new Texture(Gdx.files.internal("graphics/" + grhNumber + ".png"));
@@ -239,7 +219,7 @@ public class GameScreen implements Screen {
             for (int b = 0; b < 6; b++) {
                 frames.add(new TextureRegion(texture, 27 * b, 47 * a, 27, 47));
             }
-            animations.add(new Animation(0.15f, frames));
+            animations.add(new Animation(0.1f, frames));
             frames.clear();
         }
         return animations;
@@ -279,6 +259,18 @@ public class GameScreen implements Screen {
         p.id = players.get(0).getId();
         client.client.sendUDP(p);
 
+    }
+
+    public Viewport getViewport() {
+        return viewPort;
+    }
+
+    public BitmapFont getFont() {
+        return font;
+    }
+
+    public Console getConsole() {
+        return console;
     }
 }
 
