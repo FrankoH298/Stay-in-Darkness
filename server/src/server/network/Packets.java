@@ -24,4 +24,13 @@ public class Packets {
         public int heading;
     }
 
+    public static class Packet04LoginRequest{
+        public String name;
+        public String password;
+    }
+
+    public static class Packet05LoginAnswer{
+        public int yourID;
+        public boolean logged;
+    }
 }

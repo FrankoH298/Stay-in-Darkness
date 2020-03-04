@@ -41,6 +41,8 @@ public class serverLauncher {
         kryo.register(Packets.Packet01AddPlayer.class);
         kryo.register(Packets.Packet02RemovePlayer.class);
         kryo.register(Packets.Packet03UpdatePlayer.class);
+        kryo.register(Packets.Packet04LoginRequest.class);
+        kryo.register(Packets.Packet05LoginAnswer.class);
     }
 
     public static void main(String[] arg) {

@@ -28,18 +28,19 @@ public class ClientNetworkListener extends Listener {
             Packets.Packet00Message p = (Packets.Packet00Message) o;
             System.out.println("[SERVER]: " + p.message);
             game.menu.gameScreen.getConsole().consoleTextAdd("[SERVER]: " + p.message);
-        }
-        if (o instanceof Packets.Packet01AddPlayer) {
+        }else if (o instanceof Packets.Packet01AddPlayer) {
             Packets.Packet01AddPlayer p = (Packets.Packet01AddPlayer) o;
             game.menu.gameScreen.addPlayer(p.id, p.x, p.y,p.heading);
-        }
-        if (o instanceof Packets.Packet02RemovePlayer) {
+        }else if (o instanceof Packets.Packet02RemovePlayer) {
             Packets.Packet02RemovePlayer p = (Packets.Packet02RemovePlayer) o;
             game.menu.gameScreen.removePlayer(p.id);
-        }
-        if (o instanceof Packets.Packet03UpdatePlayer) {
+        }else if (o instanceof Packets.Packet03UpdatePlayer) {
             Packets.Packet03UpdatePlayer p = (Packets.Packet03UpdatePlayer) o;
             game.menu.gameScreen.updatePlayer(p.id, p.x, p.y, p.heading);
+        }else if (o instanceof Packets.Packet05LoginAnswer){
+            Packets.Packet05LoginAnswer p = (Packets.Packet05LoginAnswer) o;
+            System.out.println("Seteando ID");
+            game.menu.gameScreen.setMyID(p.yourID);
         }
     }
 }

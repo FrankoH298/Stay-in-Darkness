@@ -36,7 +36,7 @@ public class GameScreen implements Screen {
     private final Viewport viewPort;
     private final BitmapFont font;
     private final TiledMapSiD tiledMapSiD;
-    private Map<Integer, Player> players;
+    private final Map<Integer, Player> players;
     private final Console console;
     public Array<Array<Animation>> animations;
     private boolean isPlayable = false;
@@ -47,9 +47,11 @@ public class GameScreen implements Screen {
 
         this.game = game;
         this.batch = game.getSpriteBatch();
-
+        client = game.menu.client;
         animations = new Array<Array<Animation>>();
         animations.add(loadAnimation(1));
+
+        players = new HashMap<Integer, Player>();
 
         // Creamos una camara.
         this.camera = new OrthographicCamera();
@@ -70,13 +72,6 @@ public class GameScreen implements Screen {
 
         // Inicializamos la consola con un tamaño de 4.
         console = new Console(this, 4);
-
-        players = new HashMap<Integer, Player>();
-
-        // Conectamos con el servidor.
-        client = new SiDClient(game);
-
-        myID = client.client.getID();
 
     }
 
@@ -238,6 +233,9 @@ public class GameScreen implements Screen {
         Player player = new Player(id, x, y, animations.get(0));
         player.setHeading(heading);
         players.put(id, player);
+        System.out.println("Mi IDServer: " + myID);
+        System.out.println("ID Recibida: " + id);
+        System.out.println("Mi IDCliente: " + client.client.getID());
         if (myID == id) {
             isPlayable = true;
         }
@@ -272,6 +270,14 @@ public class GameScreen implements Screen {
 
     public Console getConsole() {
         return console;
+    }
+
+    public int getMyID() {
+        return myID;
+    }
+
+    public void setMyID(int myID) {
+        this.myID = myID;
     }
 }
 

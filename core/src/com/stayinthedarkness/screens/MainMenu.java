@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.stayinthedarkness.MainGame;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.stayinthedarkness.network.Packets;
+import com.stayinthedarkness.network.SiDClient;
 
 public class MainMenu implements Screen {
 
@@ -21,6 +23,7 @@ public class MainMenu implements Screen {
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
     public GameScreen gameScreen;
+    public SiDClient client;
 
     public MainMenu(final MainGame game) {
         this.game = game;
@@ -66,7 +69,14 @@ public class MainMenu implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                // Conectamos con el servidor.
+                client = new SiDClient(game);
                 gameScreen = new GameScreen(game);
+                Packets.Packet04LoginRequest P04 = new Packets.Packet04LoginRequest();
+                P04.name = fieldName.getText();
+                System.out.println("Nombre: " + P04.name);
+                P04.password = "asd";
+                client.client.sendTCP(P04);
                 game.setScreen(gameScreen);
             }
         });
