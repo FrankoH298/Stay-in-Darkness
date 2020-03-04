@@ -5,33 +5,37 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.stayinthedarkness.MainGame;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.stayinthedarkness.network.Packets;
-import com.stayinthedarkness.network.SiDClient;
 
-public class MainMenu implements Screen {
+public class OptionsScreen implements Screen {
 
     private final MainGame game;
     private final Stage stage;
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
-    public GameScreen gameScreen;
-    public SiDClient client;
-    private TextButton playButton;
-    private TextButton exitButton;
-    private TextButton optionsButton;
-    private Label labelName;
-    private TextField fieldName;
+    private CheckBox fullscreenCheckBox;
+    private Label fullscreenLabel;
+    private Label resolutionLabel;
+    private Label actualResLabel;
+    private TextButton previousResolutionBtn;
+    private TextButton nextResolutionBtn;
+    private Label labelSettings;
     private final I18NBundle bundle;
+    private TextButton BackButton;
+    private Slider soundSlider;
+    private Label soundLabel;
 
-    public MainMenu(final MainGame game) {
+    public OptionsScreen(final MainGame game) {
         this.game = game;
 
         // Seteamos para el que stage controle la entrada del teclado.
@@ -53,11 +57,12 @@ public class MainMenu implements Screen {
 
         // Cargamos los archivos de traduccion.
         bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
-      
+
         // Inicializamos los widgets, seteamos los listeners y aplicamos parametros
         widgetsInit();
         widgetsListeners();
         widgetsParameters();
+
     }
 
     @Override
@@ -68,6 +73,7 @@ public class MainMenu implements Screen {
     public void render(float delta) {// delta = Tiempo que hay entre un frame y otro. Ej:   Frame1 -- 50ms -- Frame2
 
         // Limpiamos la escena y le establecemos un fondo de color.
+
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -106,67 +112,68 @@ public class MainMenu implements Screen {
 
         // Limpiamos el stage.
         stage.dispose();
-
     }
 
     private void widgetsInit() {
-        playButton = new TextButton(bundle.get("MainMenu.playButton"), skin);
-        optionsButton = new TextButton(bundle.get("MainMenu.optionButton"), skin);
-        exitButton = new TextButton(bundle.get("MainMenu.exitButton"), skin);
-        labelName = new Label("Stay In Darkness", skin);
-        fieldName = new TextField("", skin);
+        fullscreenCheckBox = new CheckBox("", skin);
+        fullscreenLabel = new Label(bundle.get("MainMenu.fullscreenLabel"), skin);
+        resolutionLabel = new Label(bundle.get("MainMenu.resolutionLabel"), skin);
+        actualResLabel = new Label("e.x 1920x1080", skin);
+        previousResolutionBtn = new TextButton("<", skin);
+        nextResolutionBtn = new TextButton(">", skin);
+        BackButton = new TextButton(bundle.get("MainMenu.BackButton"), skin);
+        labelSettings = new Label(bundle.get("MainMenu.labelSettings"), skin);
+        soundSlider = new Slider(0, 100, 1, false, skin);
+        soundLabel = new Label(bundle.get("MainMenu.soundLabel"), skin);
 
-        // Setea un mensaje de fondo que es borrado al clickear el fieldName.
-        fieldName.setMessageText(bundle.get("MainMenu.fieldName"));
     }
 
     private void widgetsListeners() {
-        exitButton.addListener(new ClickListener() {
+        BackButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                game.setScreen(new MainMenu(game));
             }
 
         });
 
         //Esto es para cambiar a la ventana del juego
-        playButton.addListener(new ClickListener() {
+        fullscreenCheckBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Conectamos con el servidor.
-                client = new SiDClient(game);
-                gameScreen = new GameScreen(game);
-                Packets.Packet04LoginRequest P04 = new Packets.Packet04LoginRequest();
-                P04.name = fieldName.getText();
-                System.out.println("Nombre: " + P04.name);
-                P04.password = "asd";
-                client.client.sendTCP(P04);
-                game.setScreen(gameScreen);
+
+                if (fullscreenCheckBox.isChecked() == false) {
+                    Gdx.graphics.setWindowedMode(MainGame.V_WIDTH, MainGame.V_HEIGHT);
+                } else {
+                    Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+                }
+                // Creamos un nuevo viewport con el nuevo tamaño de la ventana.
+                reloadViewport();
             }
         });
 
-        //Esto es para cambiar a la ventana de opciones
-        optionsButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new OptionsScreen(game));
-            }
-
-        });
 
     }
 
     private void widgetsParameters() {
-        table.add(labelName).expand(0, 100).prefWidth(100).prefHeight(50);
+        table.add(labelSettings).colspan(4).expand(Gdx.graphics.getWidth(), 1);
         table.row(); // Inserta una fila
-        table.add(fieldName).expandY().bottom().prefWidth(100).prefHeight(50);
+        table.add(fullscreenLabel).expand().right();
+        table.add(fullscreenCheckBox).expand().colspan(3).size(100);
         table.row(); // Inserta una fila
-        table.add(playButton).expandY().prefWidth(100).prefHeight(50);
-        table.row(); // Inserta una fila
-        table.add(optionsButton).expandY().top().prefWidth(100).prefHeight(50);
+        table.add(resolutionLabel).expand().right();
+        table.add(previousResolutionBtn).expand().width(20).height(30).right();
+        table.add(actualResLabel).expand();
+        table.add(nextResolutionBtn).expand().width(20).height(30).left();
         table.row();
-        table.add(exitButton).expand().bottom().right().prefWidth(100).prefHeight(50);
+        table.add(soundLabel).expand().right();
+        table.add(soundSlider).expand().colspan(3);
+        table.row();
+        table.add(BackButton).expand().left().bottom().width(100).height(50);
 
     }
 
+    private void reloadViewport() {
+        stage.setViewport(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+    }
 }
