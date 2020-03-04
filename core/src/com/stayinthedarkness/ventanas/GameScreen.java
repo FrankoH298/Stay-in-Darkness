@@ -45,8 +45,6 @@ public class GameScreen implements Screen {
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("map/tiledmap.tmx");
         rendererMap = new OrthogonalTiledMapRenderer(map, batch);
-        
-        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 
     }
 

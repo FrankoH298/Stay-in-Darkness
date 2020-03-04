@@ -57,19 +57,11 @@ public class OptionsScreen implements Screen {
 
         // Cargamos los archivos de traduccion.
         bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
-        
-        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-        
-        
 
-        
-        
         // Inicializamos los widgets, seteamos los listeners y aplicamos parametros
         widgetsInit();
         widgetsListeners();
         widgetsParameters();
-        
-
 
     }
 
@@ -81,7 +73,7 @@ public class OptionsScreen implements Screen {
     public void render(float delta) {// delta = Tiempo que hay entre un frame y otro. Ej:   Frame1 -- 50ms -- Frame2
 
         // Limpiamos la escena y le establecemos un fondo de color.
-        
+
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -151,7 +143,7 @@ public class OptionsScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
 
                 if (fullscreenCheckBox.isChecked() == false) {
-                    Gdx.graphics.setWindowedMode(800, 600);
+                    Gdx.graphics.setWindowedMode(MainGame.V_WIDTH, MainGame.V_HEIGHT);
                 } else {
                     Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
                 }

@@ -50,8 +50,6 @@ public class MainMenu implements Screen {
 
         // Cargamos los archivos de traduccion.
         bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
-        
-        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 
         // Inicializamos los widgets, seteamos los listeners y aplicamos parametros
         widgetsInit();
