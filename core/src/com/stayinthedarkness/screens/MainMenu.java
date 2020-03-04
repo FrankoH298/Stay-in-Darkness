@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.stayinthedarkness.MainGame;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.stayinthedarkness.network.Packets;
+import com.stayinthedarkness.network.SiDClient;
 
 public class MainMenu implements Screen {
 
@@ -20,13 +22,14 @@ public class MainMenu implements Screen {
     private final Stage stage;
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
+    public GameScreen gameScreen;
+    public SiDClient client;
     private TextButton playButton;
     private TextButton exitButton;
     private TextButton optionsButton;
     private Label labelName;
     private TextField fieldName;
     private final I18NBundle bundle;
-
 
     public MainMenu(final MainGame game) {
         this.game = game;
@@ -50,7 +53,7 @@ public class MainMenu implements Screen {
 
         // Cargamos los archivos de traduccion.
         bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
-
+      
         // Inicializamos los widgets, seteamos los listeners y aplicamos parametros
         widgetsInit();
         widgetsListeners();
@@ -130,7 +133,15 @@ public class MainMenu implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                // Conectamos con el servidor.
+                client = new SiDClient(game);
+                gameScreen = new GameScreen(game);
+                Packets.Packet04LoginRequest P04 = new Packets.Packet04LoginRequest();
+                P04.name = fieldName.getText();
+                System.out.println("Nombre: " + P04.name);
+                P04.password = "asd";
+                client.client.sendTCP(P04);
+                game.setScreen(gameScreen);
             }
         });
 

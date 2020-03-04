@@ -10,6 +10,7 @@ public class MainGame extends Game {
     public static final int V_WIDTH = 800;
     public static final int V_HEIGHT = 600;
     private SpriteBatch batch;
+    public MainMenu menu;
 
     @Override
     public void create() {
@@ -17,7 +18,8 @@ public class MainGame extends Game {
         batch = new SpriteBatch();
 
         // Seteamos la ventana de juego.
-        setScreen(new MainMenu(this));
+        menu = new MainMenu(this);
+        setScreen(menu);
     }
 
     @Override

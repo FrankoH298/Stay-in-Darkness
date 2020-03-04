@@ -14,7 +14,8 @@ public class DesktopLauncher {
         config.allowSoftwareMode = false;
         config.width = MainGame.V_WIDTH;
         config.height = MainGame.V_HEIGHT;
+        config.title = "Stay in Darkness";
+        config.resizable = false;
         new LwjglApplication(new MainGame(), config);
-
     }
 }

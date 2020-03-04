@@ -1,4 +1,4 @@
-package com.stayinthedarkness.objects;
+package server.clients;
 
 public class Inventory {
     public Item[] items = new Item[20];

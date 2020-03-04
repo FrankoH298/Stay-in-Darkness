@@ -37,31 +37,36 @@ public abstract class Entity {
     }
 
     public void translate(float x, float y) {
-        position.setX(position.getX() + x);
-        position.setY(position.getY() + y);
+        position.x += x;
+        position.y += y;
     }
 
 
     public abstract static class Dynamic extends Entity {
-        private Array<Animation> animations;
+
         private int heading = 0;
         private float velocity = 100f;
         private float stateTimer = 0f;
         private TextureRegion texture;
+        public Array<Animation> animations;
+        public float lastX;
+        public float lastY;
+        private long lastTime = System.currentTimeMillis();
 
-        public Dynamic(int id, int grhNumber, float x, float y) {
+        public Dynamic(int id, float x, float y, Array<Animation> animations) {
             super(id, x, y);
-            Texture texture = new Texture(Gdx.files.internal("graphics/" + grhNumber + ".png"));
-            animations = new Array<Animation>();
-            Array<TextureRegion> frames = new Array<TextureRegion>();
-            for (int a = 0; a < 4; a++) {
-                for (int b = 0; b < 6; b++) {
-                    frames.add(new TextureRegion(texture, 27 * b, 47 * a, 27, 47));
-                }
-                animations.add(new Animation(0.1f, frames));
-                frames.clear();
-            }
+            this.animations = animations;
+            texture = getFrame(0);
+            lastX = x;
+            lastY = y;
+        }
 
+        @Override
+        public void translate(float x, float y) {
+            lastX = super.getPosition().x;
+            lastY = super.getPosition().y;
+            super.getPosition().x += x;
+            super.getPosition().y += y;
         }
 
         public TextureRegion getFrame(float delta) {
@@ -70,6 +75,20 @@ public abstract class Entity {
 
         public void update(float delta) {
             texture = getFrame(delta);
+            if (lastX != getPosition().x || lastY != getPosition().y) {
+                updateStateTimer(delta);
+                lastX = getPosition().x;
+                lastY = getPosition().y;
+                lastTime = System.currentTimeMillis();
+            } else {
+
+                if (getStateTimer() != 0) {
+                    if (System.currentTimeMillis() - lastTime > 50) {
+                        setStateTimer(0);
+                        lastTime = System.currentTimeMillis();
+                    }
+                }
+            }
         }
 
         public float getStateTimer() {
@@ -102,7 +121,7 @@ public abstract class Entity {
 
         public void render(Batch batch) {
             // Dibuja la keyFrame en la posicion de la entidad.
-            batch.draw(texture, super.getPosition().getX(), super.getPosition().getY());
+            batch.draw(texture, super.getPosition().x, super.getPosition().y);
         }
     }
 
@@ -116,7 +135,7 @@ public abstract class Entity {
 
         public void render(Batch batch) {
             // Dibuja la textura en la posicion de la entidad.
-            batch.draw(texture, super.getPosition().getX(), super.getPosition().getY());
+            batch.draw(texture, super.getPosition().x, super.getPosition().y);
 
         }
 
