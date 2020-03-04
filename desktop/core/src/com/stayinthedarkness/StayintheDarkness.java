@@ -2,7 +2,7 @@ package com.stayinthedarkness;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.stayinthedarkness.ventanas.MainMenu;
+import com.stayinthedarkness.screens.MainMenu;
 
 public class StayintheDarkness extends Game {
 
