@@ -123,7 +123,7 @@ public class GameScreen implements Screen {
 
     private void handleInput(float delta) {
 
-        // Multiplicamos la velocidad base y delta para que la velocidad no dependa de los frames.
+        /* Multiplicamos la velocidad base y delta para que la velocidad no dependa de los frames. */
         velocity = (100f * delta);
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             camera.translate(0, velocity);
