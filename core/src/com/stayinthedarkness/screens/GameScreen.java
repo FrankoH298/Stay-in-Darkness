@@ -23,6 +23,9 @@ import com.stayinthedarkness.world.TiledMapSiD;
 import com.stayinthedarkness.world.WorldPosition;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameScreen implements Screen {
 
@@ -33,11 +36,12 @@ public class GameScreen implements Screen {
     private final Viewport viewPort;
     private final BitmapFont font;
     private final TiledMapSiD tiledMapSiD;
-    private ArrayList<Player> players;
+    private Map<Integer, Player> players;
     private final Console console;
     public Array<Array<Animation>> animations;
     private boolean isPlayable = false;
-    SiDClient client;
+    public SiDClient client;
+    private int myID;
 
     public GameScreen(MainGame game) {
 
@@ -65,12 +69,14 @@ public class GameScreen implements Screen {
         tiledMapSiD = new TiledMapSiD(batch);
 
         // Inicializamos la consola con un tamaño de 4.
-        console = new Console(this,4);
+        console = new Console(this, 4);
 
-        players = new ArrayList<Player>();
+        players = new HashMap<Integer, Player>();
 
         // Conectamos con el servidor.
         client = new SiDClient(game);
+
+        myID = client.client.getID();
 
     }
 
@@ -84,15 +90,16 @@ public class GameScreen implements Screen {
 
         // Actualiza la camara.
         if (isPlayable) {
-            camera.position.set(players.get(0).getPosition().x + players.get(0).getCenterPositionW(delta), players.get(0).getPosition().y + players.get(0).getCenterPositionH(delta), 0);
+            camera.position.set(players.get(myID).getPosition().x + players.get(myID).getCenterPositionW(delta), players.get(myID).getPosition().y + players.get(myID).getCenterPositionH(delta), 0);
         }
         camera.update();
 
         // Le seteamos la camara al renderizado del mapa.
         tiledMapSiD.getRendererMap().setView(camera);
 
-        for (int a = 0; a < players.size(); a++) {
-            players.get(a).update(delta);
+        Collection<Player> c = players.values();
+        for (Player p : c) {
+            p.update(delta);
         }
     }
 
@@ -122,8 +129,10 @@ public class GameScreen implements Screen {
         // Renderizamos modo debug. (Muestra posiciones).
         renderDebug();
 
-        for (int a = 0; a < players.size(); a++) {
-            players.get(a).render(batch);
+
+        Collection<Player> c = players.values();
+        for (Player p : c) {
+            p.render(batch);
         }
 
         // Fin del batch.
@@ -168,27 +177,27 @@ public class GameScreen implements Screen {
 
         /* Multiplicamos la velocidad base y delta para que la velocidad no dependa de los frames. */
         if (isPlayable) {
-            float velocity = (players.get(0).getVelocity() * delta);
+            float velocity = (players.get(myID).getVelocity() * delta);
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                players.get(0).setHeading(1);
-                players.get(0).translate(0, velocity);
+                players.get(myID).setHeading(1);
+                players.get(myID).translate(0, velocity);
                 //players.get(0).updateStateTimer(delta);
-                movePlayer(players.get(0));
+                movePlayer(players.get(myID));
             } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                players.get(0).setHeading(0);
-                players.get(0).translate(0, -velocity);
+                players.get(myID).setHeading(0);
+                players.get(myID).translate(0, -velocity);
                 //players.get(0).updateStateTimer(delta);
-                movePlayer(players.get(0));
+                movePlayer(players.get(myID));
             } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                players.get(0).setHeading(3);
-                players.get(0).translate(velocity, 0);
+                players.get(myID).setHeading(3);
+                players.get(myID).translate(velocity, 0);
                 //players.get(0).updateStateTimer(delta);
-                movePlayer(players.get(0));
+                movePlayer(players.get(myID));
             } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                players.get(0).setHeading(2);
-                players.get(0).translate(-velocity, 0);
+                players.get(myID).setHeading(2);
+                players.get(myID).translate(-velocity, 0);
                 //players.get(0).updateStateTimer(delta);
-                movePlayer(players.get(0));
+                movePlayer(players.get(myID));
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -228,35 +237,27 @@ public class GameScreen implements Screen {
     public void addPlayer(int id, float x, float y, int heading) {
         Player player = new Player(id, x, y, animations.get(0));
         player.setHeading(heading);
-        players.add(player);
-        if (client.client.getID() == id) {
+        players.put(id, player);
+        if (myID == id) {
             isPlayable = true;
         }
     }
 
     public void removePlayer(int id) {
-        for (int a = 0; a < players.size(); a++) {
-            if (players.get(a).getId() == id) {
-                players.remove(a);
-            }
-        }
+        players.remove(id);
     }
 
     public void updatePlayer(int id, float x, float y, int heading) {
-        for (int a = 0; a < players.size(); a++) {
-            if (players.get(a).getId() == id) {
-                players.get(a).setHeading(heading);
-                players.get(a).setPosition(new WorldPosition(x, y));
-            }
-        }
+        players.get(id).setHeading(heading);
+        players.get(id).setPosition(new WorldPosition(x, y));
     }
 
     public void movePlayer(Player player) {
         Packets.Packet03UpdatePlayer p = new Packets.Packet03UpdatePlayer();
-        p.heading = players.get(0).getHeading();
-        p.x = players.get(0).getPosition().x;
-        p.y = players.get(0).getPosition().y;
-        p.id = players.get(0).getId();
+        p.heading = players.get(myID).getHeading();
+        p.x = players.get(myID).getPosition().x;
+        p.y = players.get(myID).getPosition().y;
+        p.id = players.get(myID).getId();
         client.client.sendUDP(p);
 
     }
