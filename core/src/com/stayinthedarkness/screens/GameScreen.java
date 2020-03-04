@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.esotericsoftware.kryonet.Client;
 import com.stayinthedarkness.MainGame;
 import com.stayinthedarkness.entities.Dynamic.Player;
 import com.stayinthedarkness.entities.Solid.Tree;
@@ -38,16 +39,16 @@ public class GameScreen implements Screen {
     private final TiledMapSiD tiledMapSiD;
     private final Map<Integer, Player> players;
     private final Console console;
-    public Array<Array<Animation>> animations;
+    private Array<Array<Animation>> animations;
     private boolean isPlayable = false;
-    public SiDClient client;
+    private Client client;
     private int myID;
 
     public GameScreen(MainGame game) {
 
         this.game = game;
         this.batch = game.getSpriteBatch();
-        client = game.menu.client;
+
         animations = new Array<Array<Animation>>();
         animations.add(loadAnimation(1));
 
@@ -65,7 +66,6 @@ public class GameScreen implements Screen {
 
         // Seteamos la posicion de la camara en la mitad de la ventana.
         camera.position.set(viewPort.getWorldWidth() / 2f, viewPort.getWorldHeight() / 2f, 0);
-
         font = new BitmapFont();
         ////////////////////////////////////////////////////////////////////////////////
         tiledMapSiD = new TiledMapSiD(batch);
@@ -84,10 +84,7 @@ public class GameScreen implements Screen {
         handleInput(delta);
 
         // Actualiza la camara.
-        if (isPlayable) {
-            camera.position.set(players.get(myID).getPosition().x + players.get(myID).getCenterPositionW(delta), players.get(myID).getPosition().y + players.get(myID).getCenterPositionH(delta), 0);
-        }
-        camera.update();
+        updateCamera(delta);
 
         // Le seteamos la camara al renderizado del mapa.
         tiledMapSiD.getRendererMap().setView(camera);
@@ -157,6 +154,9 @@ public class GameScreen implements Screen {
     public void dispose() {
         font.dispose();
         tiledMapSiD.dispose();
+        players.clear();
+        animations.clear();
+        isPlayable = false;
     }
 
     public void drawText(BitmapFont font, SpriteBatch batch, String text, float x, float y, float r, float g, float b, float a) {
@@ -196,8 +196,10 @@ public class GameScreen implements Screen {
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-                client.client.close();
-                game.setScreen(new MainMenu(game));
+                client.close();
+                game.menu = new MainMenu(game);
+                game.setScreen(this.game.menu);
+                this.dispose();
             }
         }
     }
@@ -235,9 +237,10 @@ public class GameScreen implements Screen {
         players.put(id, player);
         System.out.println("Mi IDServer: " + myID);
         System.out.println("ID Recibida: " + id);
-        System.out.println("Mi IDCliente: " + client.client.getID());
+        System.out.println("Mi IDCliente: " + client.getID());
         if (myID == id) {
             isPlayable = true;
+            updateCamera();
         }
     }
 
@@ -256,7 +259,7 @@ public class GameScreen implements Screen {
         p.x = players.get(myID).getPosition().x;
         p.y = players.get(myID).getPosition().y;
         p.id = players.get(myID).getId();
-        client.client.sendUDP(p);
+        client.sendUDP(p);
 
     }
 
@@ -278,6 +281,24 @@ public class GameScreen implements Screen {
 
     public void setMyID(int myID) {
         this.myID = myID;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    private void updateCamera(float delta) {
+        if (isPlayable) {
+            camera.position.set(players.get(myID).getPosition().x + players.get(myID).getCenterPositionW(delta), players.get(myID).getPosition().y + players.get(myID).getCenterPositionH(delta), 0);
+        }
+        camera.update();
+    }
+
+    private void updateCamera() {
+        if (isPlayable) {
+            camera.position.set(players.get(myID).getPosition().x + players.get(myID).getCenterPositionW(), players.get(myID).getPosition().y + players.get(myID).getCenterPositionH(), 0);
+        }
+        camera.update();
     }
 }
 

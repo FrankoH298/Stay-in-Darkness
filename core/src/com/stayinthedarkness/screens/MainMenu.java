@@ -134,8 +134,9 @@ public class MainMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Conectamos con el servidor.
-                client = new SiDClient(game);
                 gameScreen = new GameScreen(game);
+                client = new SiDClient(game);
+                gameScreen.setClient(client.client);
                 Packets.Packet04LoginRequest P04 = new Packets.Packet04LoginRequest();
                 P04.name = fieldName.getText();
                 System.out.println("Nombre: " + P04.name);

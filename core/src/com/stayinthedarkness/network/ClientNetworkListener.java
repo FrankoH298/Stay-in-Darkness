@@ -24,6 +24,7 @@ public class ClientNetworkListener extends Listener {
     }
 
     public void received(Connection c, Object o) {
+        System.out.println(o);
         if (o instanceof Packets.Packet00Message) {
             Packets.Packet00Message p = (Packets.Packet00Message) o;
             System.out.println("[SERVER]: " + p.message);
@@ -39,7 +40,6 @@ public class ClientNetworkListener extends Listener {
             game.menu.gameScreen.updatePlayer(p.id, p.x, p.y, p.heading);
         }else if (o instanceof Packets.Packet05LoginAnswer){
             Packets.Packet05LoginAnswer p = (Packets.Packet05LoginAnswer) o;
-            System.out.println("Seteando ID");
             game.menu.gameScreen.setMyID(p.yourID);
         }
     }
