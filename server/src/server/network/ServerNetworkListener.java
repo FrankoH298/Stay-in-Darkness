@@ -6,14 +6,16 @@ import com.esotericsoftware.kryonet.Server;
 import server.clients.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServerNetworkListener extends Listener {
     private Server SiDServer;
-    private ArrayList<Player> players;
+    private Map<Integer, Client> userList;
 
     public ServerNetworkListener(Server SiDServer) {
         this.SiDServer = SiDServer;
-        this.players = new ArrayList<Player>();
+        userList = new HashMap<Integer, Client>();
     }
 
     @Override
@@ -27,15 +29,15 @@ public class ServerNetworkListener extends Listener {
         player.y = 0;
         player.heading = 0;
         SiDServer.sendToAllTCP(player);
-        for (int a = 0; a < players.size(); a++) {
+        for (Client client : userList.values()) {
             Packets.Packet01AddPlayer playerNew = new Packets.Packet01AddPlayer();
-            playerNew.id = players.get(a).id;
-            playerNew.x = players.get(a).x;
-            playerNew.y = players.get(a).y;
-            playerNew.heading = players.get(a).heading;
+            playerNew.id = client.player.id;
+            playerNew.x = client.player.x;
+            playerNew.y = client.player.y;
+            playerNew.heading = client.player.heading;
             SiDServer.sendToTCP(c.getID(), playerNew);
         }
-        players.add(new Player(player.id, player.x, player.y, 0));
+        userList.put(c.getID(), new Client(new Player(player.id, player.x, player.y, 0), true));
     }
 
     @Override
@@ -46,11 +48,7 @@ public class ServerNetworkListener extends Listener {
         Packets.Packet02RemovePlayer player = new Packets.Packet02RemovePlayer();
         player.id = c.getID();
         SiDServer.sendToAllTCP(player);
-        for (int a = 0; a < players.size(); a++) {
-            if (players.get(a).id == c.getID()) {
-                players.remove(a);
-            }
-        }
+        userList.remove(c.getID());
     }
 
     @Override
@@ -61,14 +59,10 @@ public class ServerNetworkListener extends Listener {
         }
         if (o instanceof Packets.Packet03UpdatePlayer) {
             Packets.Packet03UpdatePlayer p = (Packets.Packet03UpdatePlayer) o;
-            for (int a = 0; a < players.size(); a++) {
-                if (players.get(a).id == c.getID()) {
-                    players.get(a).heading = p.heading;
-                    players.get(a).x = p.x;
-                    players.get(a).y = p.y;
-                }
-            }
-            SiDServer.sendToAllExceptUDP(c.getID(),p);
+            userList.get(c.getID()).player.heading = p.heading;
+            userList.get(c.getID()).player.x = p.x;
+            userList.get(c.getID()).player.y = p.y;
+            SiDServer.sendToAllExceptUDP(c.getID(), p);
         }
     }
 }
