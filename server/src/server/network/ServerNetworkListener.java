@@ -55,7 +55,7 @@ public class ServerNetworkListener extends Listener {
                 clientList.get(c.getID()).player.heading = p.heading;
                 clientList.get(c.getID()).player.x = p.x;
                 clientList.get(c.getID()).player.y = p.y;
-                SiDServer.sendToAllExceptUDP(c.getID(), p);
+                SiDServer.sendToAllExceptTCP(c.getID(), p);
             }
         }
 

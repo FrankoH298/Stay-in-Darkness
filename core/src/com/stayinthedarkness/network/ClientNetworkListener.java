@@ -42,6 +42,7 @@ public class ClientNetworkListener extends Listener {
             game.menu.gameScreen.updatePlayer(p.id, p.x, p.y, p.heading);
         }else if (o instanceof Packets.Packet05LoginAnswer){
             Packets.Packet05LoginAnswer p = (Packets.Packet05LoginAnswer) o;
+            game.setScreen(game.menu.gameScreen);
             game.menu.gameScreen.setMyID(p.id);
         }else if (o instanceof Packets.Packet06ErrorMessage){
             Packets.Packet06ErrorMessage p = (Packets.Packet06ErrorMessage) o;

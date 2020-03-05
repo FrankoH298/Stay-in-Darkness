@@ -19,7 +19,7 @@ import com.stayinthedarkness.network.SiDClient;
 public class MainMenu implements Screen {
 
     private final MainGame game;
-    private final Stage stage;
+    public final Stage stage;
     private final Table table; // Tabla de ordenamiento de widgets (Buttons, labels, etc)
     private final Skin skin;
     public GameScreen gameScreen;
@@ -146,7 +146,6 @@ public class MainMenu implements Screen {
                 P04.password = "asd1";
 
                 client.client.sendTCP(P04);
-                game.setScreen(gameScreen);
             }
         });
 

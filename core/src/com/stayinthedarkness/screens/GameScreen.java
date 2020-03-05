@@ -43,6 +43,7 @@ public class GameScreen implements Screen {
     private boolean isPlayable = false;
     private int myID;
     private Client client;
+    private final Stage stage;
 
     public GameScreen(MainGame game) {
 
@@ -62,21 +63,23 @@ public class GameScreen implements Screen {
         viewPort.apply();
 
         // Cambiamos el input processor para evitar errores.
-        Gdx.input.setInputProcessor(new Stage());
-
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(game.menu.stage);
         // Seteamos la posicion de la camara en la mitad de la ventana.
         camera.position.set(viewPort.getWorldWidth() / 2f, viewPort.getWorldHeight() / 2f, 0);
+
         font = new BitmapFont();
         ////////////////////////////////////////////////////////////////////////////////
         tiledMapSiD = new TiledMapSiD(batch);
 
         // Inicializamos la consola con un tamaño de 4.
         console = new Console(this, 4);
-        System.out.println("cargado 1");
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     public void update(float delta) {
@@ -135,7 +138,9 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
 
         // Actualizamos el viewport
-        viewPort.update(width, height);
+        if (isPlayable) {
+            viewPort.update(width, height);
+        }
     }
 
     @Override
@@ -259,7 +264,7 @@ public class GameScreen implements Screen {
         p.x = players.get(myID).getPosition().x;
         p.y = players.get(myID).getPosition().y;
         p.id = players.get(myID).getId();
-        client.sendUDP(p);
+        client.sendTCP(p);
 
     }
 
