@@ -5,8 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.stayinthedarkness.MainGame;
-import com.stayinthedarkness.screens.GameScreen;
-import com.stayinthedarkness.screens.MainMenu;
 
 import java.io.IOException;
 

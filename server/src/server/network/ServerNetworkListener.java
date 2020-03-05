@@ -4,18 +4,18 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import server.clients.Player;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ServerNetworkListener extends Listener {
     private Server SiDServer;
     private Map<Integer, Client> clientList;
+    private SQLConnection sqlConnection;
 
     public ServerNetworkListener(Server SiDServer) {
         this.SiDServer = SiDServer;
         clientList = new HashMap<Integer, Client>();
+        sqlConnection = new SQLConnection();
     }
 
     @Override
@@ -63,12 +63,11 @@ public class ServerNetworkListener extends Listener {
     private void connectUser(Connection c, String name, String password) {
 
         // Corroboramos si su informacion es correcta.
-        if (name.equals("Franco") && password.equals("asd")) {
+        if (sqlConnection.checkPassword(name, password)) {
 
             // Le enviamos al usuario su id y le avisamos que esta logeado.
             Packets.Packet05LoginAnswer P05 = new Packets.Packet05LoginAnswer();
-            P05.logged = true;
-            P05.yourID = c.getID();
+            P05.id = c.getID();
             SiDServer.sendToTCP(c.getID(), P05);
 
             // Avisamos a el servidor la id de la persona que entro.
@@ -77,27 +76,28 @@ public class ServerNetworkListener extends Listener {
             SiDServer.sendToAllExceptTCP(c.getID(), P00);
 
             // Enviamos a los clientes el nuevo player.
+            Player newPlayer = sqlConnection.loadUser(name);
             Packets.Packet01AddPlayer P01 = new Packets.Packet01AddPlayer();
             P01.id = c.getID();
-            P01.x = 0;
-            P01.y = 0;
-            P01.heading = 0;
+            P01.x = newPlayer.x;
+            P01.y = newPlayer.y;
+            P01.heading = newPlayer.heading;
             SiDServer.sendToAllTCP(P01);
 
             // Le enviamos al cliente los players que estaban antes.
             for (Client client : clientList.values()) {
                 if (client.logged) {
-                    Packets.Packet01AddPlayer playerNew = new Packets.Packet01AddPlayer();
-                    playerNew.id = client.player.id;
-                    playerNew.x = client.player.x;
-                    playerNew.y = client.player.y;
-                    playerNew.heading = client.player.heading;
-                    SiDServer.sendToTCP(c.getID(), playerNew);
+                    Packets.Packet01AddPlayer oldPlayer = new Packets.Packet01AddPlayer();
+                    oldPlayer.id = client.player.id;
+                    oldPlayer.x = client.player.x;
+                    oldPlayer.y = client.player.y;
+                    oldPlayer.heading = client.player.heading;
+                    SiDServer.sendToTCP(c.getID(), oldPlayer);
                 }
             }
 
             // Agregamos al cliente a la lista de clientes.
-            clientList.put(c.getID(), new Client(new Player(P01.id, P01.x, P01.y, 0), true));
+            clientList.put(c.getID(), new Client(newPlayer, true));
         } else {
             c.close();
             // TODO: Crear paquete errorMessage que avise el tipo de error al cliente.

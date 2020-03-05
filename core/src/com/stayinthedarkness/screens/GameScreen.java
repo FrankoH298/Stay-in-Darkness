@@ -41,8 +41,8 @@ public class GameScreen implements Screen {
     private final Console console;
     private Array<Array<Animation>> animations;
     private boolean isPlayable = false;
-    private Client client;
     private int myID;
+    private Client client;
 
     public GameScreen(MainGame game) {
 
@@ -72,7 +72,7 @@ public class GameScreen implements Screen {
 
         // Inicializamos la consola con un tamaño de 4.
         console = new Console(this, 4);
-
+        System.out.println("cargado 1");
     }
 
     @Override

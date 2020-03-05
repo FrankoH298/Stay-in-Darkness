@@ -40,7 +40,7 @@ public class ClientNetworkListener extends Listener {
             game.menu.gameScreen.updatePlayer(p.id, p.x, p.y, p.heading);
         }else if (o instanceof Packets.Packet05LoginAnswer){
             Packets.Packet05LoginAnswer p = (Packets.Packet05LoginAnswer) o;
-            game.menu.gameScreen.setMyID(p.yourID);
+            game.menu.gameScreen.setMyID(p.id);
         }
     }
 }

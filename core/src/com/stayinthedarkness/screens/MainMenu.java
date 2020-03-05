@@ -53,7 +53,7 @@ public class MainMenu implements Screen {
 
         // Cargamos los archivos de traduccion.
         bundle = I18NBundle.createBundle(Gdx.files.internal("locale/locale"));
-      
+
         // Inicializamos los widgets, seteamos los listeners y aplicamos parametros
         widgetsInit();
         widgetsListeners();
@@ -133,14 +133,18 @@ public class MainMenu implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+
                 // Conectamos con el servidor.
                 gameScreen = new GameScreen(game);
                 client = new SiDClient(game);
                 gameScreen.setClient(client.client);
+
                 Packets.Packet04LoginRequest P04 = new Packets.Packet04LoginRequest();
+
+                // Info Connection
                 P04.name = fieldName.getText();
-                System.out.println("Nombre: " + P04.name);
-                P04.password = "asd";
+                P04.password = "asd1";
+
                 client.client.sendTCP(P04);
                 game.setScreen(gameScreen);
             }

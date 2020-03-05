@@ -76,5 +76,6 @@ project(":server") {
     dependencies {
         api group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
         implementation enforcedPlatform(group: "com.esotericsoftware", name: "kryo", version: "4.0.2")
+        compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
     }
 }

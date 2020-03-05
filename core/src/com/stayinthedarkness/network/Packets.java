@@ -32,7 +32,6 @@ public class Packets {
     }
 
     public static class Packet05LoginAnswer {
-        public int yourID;
-        public boolean logged;
+        public int id;
     }
 }
