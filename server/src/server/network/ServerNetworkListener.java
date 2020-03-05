@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import server.clients.Player;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,8 +100,14 @@ public class ServerNetworkListener extends Listener {
             // Agregamos al cliente a la lista de clientes.
             clientList.put(c.getID(), new Client(newPlayer, true));
         } else {
+            showMessageBox(c.getID(), "Usuario o contraseña incorrecta");
             c.close();
-            // TODO: Crear paquete errorMessage que avise el tipo de error al cliente.
         }
+    }
+
+    private void showMessageBox(int id, String msg) {
+        Packets.Packet06ErrorMessage pError = new Packets.Packet06ErrorMessage();
+        pError.msg = msg;
+        SiDServer.sendToTCP(id, pError);
     }
 }

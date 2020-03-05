@@ -6,6 +6,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.stayinthedarkness.MainGame;
 
+import javax.swing.*;
+
 public class ClientNetworkListener extends Listener {
     private Client client;
     private MainGame game;
@@ -41,6 +43,9 @@ public class ClientNetworkListener extends Listener {
         }else if (o instanceof Packets.Packet05LoginAnswer){
             Packets.Packet05LoginAnswer p = (Packets.Packet05LoginAnswer) o;
             game.menu.gameScreen.setMyID(p.id);
+        }else if (o instanceof Packets.Packet06ErrorMessage){
+            Packets.Packet06ErrorMessage p = (Packets.Packet06ErrorMessage) o;
+            JOptionPane.showMessageDialog(null,p.msg,"Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

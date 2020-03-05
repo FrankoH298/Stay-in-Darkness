@@ -17,19 +17,23 @@ public class Packets {
         public int id;
     }
 
-    public static class Packet03UpdatePlayer{
+    public static class Packet03UpdatePlayer {
         public int id;
         public float x;
         public float y;
         public int heading;
     }
 
-    public static class Packet04LoginRequest{
+    public static class Packet04LoginRequest {
         public String name;
         public String password;
     }
 
-    public static class Packet05LoginAnswer{
+    public static class Packet05LoginAnswer {
         public int id;
+    }
+
+    public static class Packet06ErrorMessage {
+        public String msg;
     }
 }

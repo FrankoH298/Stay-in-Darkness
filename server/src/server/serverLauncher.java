@@ -43,6 +43,7 @@ public class serverLauncher {
         kryo.register(Packets.Packet03UpdatePlayer.class);
         kryo.register(Packets.Packet04LoginRequest.class);
         kryo.register(Packets.Packet05LoginAnswer.class);
+        kryo.register(Packets.Packet06ErrorMessage.class);
     }
 
     public static void main(String[] arg) {

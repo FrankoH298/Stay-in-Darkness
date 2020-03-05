@@ -34,4 +34,8 @@ public class Packets {
     public static class Packet05LoginAnswer {
         public int id;
     }
+
+    public static class Packet06ErrorMessage {
+        public String msg;
+    }
 }
